@@ -47,6 +47,43 @@ export function ChatPanel({ conversation, onChange }: Props) {
     setPending((p) => [...p, ...additions]);
   }
 
+  async function runAssistant(prompt: string, attachments?: Attachment[]) {
+    const assistantMsg: ChatMessage = {
+      id: crypto.randomUUID(),
+      role: "assistant",
+      content: "",
+      createdAt: Date.now(),
+    };
+    chatStore.addMessage(conversation.id, assistantMsg);
+    onChange();
+
+    setStreaming(true);
+    const controller = new AbortController();
+    abortRef.current = controller;
+
+    let acc = "";
+    await streamFakeReply(
+      prompt,
+      attachments,
+      (chunk) => {
+        acc += chunk;
+        chatStore.replaceLastAssistant(conversation.id, acc);
+        onChange();
+      },
+      (error) => {
+        if (error) {
+          // Persist the failure on the assistant message so the bubble can show
+          // the failed state + Retry control.
+          chatStore.replaceLastAssistant(conversation.id, "", error);
+          onChange();
+        }
+        setStreaming(false);
+        abortRef.current = null;
+      },
+      controller.signal,
+    );
+  }
+
   async function send() {
     const text = draft.trim();
     if (!text && pending.length === 0) return;
@@ -61,37 +98,24 @@ export function ChatPanel({ conversation, onChange }: Props) {
     };
     chatStore.addMessage(conversation.id, userMsg);
 
-    const assistantMsg: ChatMessage = {
-      id: crypto.randomUUID(),
-      role: "assistant",
-      content: "",
-      createdAt: Date.now(),
-    };
-    chatStore.addMessage(conversation.id, assistantMsg);
-
     setDraft("");
     setPending([]);
+
+    await runAssistant(text, userMsg.attachments);
+  }
+
+  function retryAssistantAt(index: number) {
+    if (streaming) return;
+    // The user message is the one immediately preceding the failed assistant.
+    const prev = conversation.messages[index - 1];
+    if (!prev || prev.role !== "user") return;
+
+    // Drop the failed assistant message, then run a fresh attempt.
+    const remaining = conversation.messages.slice(0, index);
+    chatStore.update(conversation.id, { messages: remaining });
     onChange();
 
-    setStreaming(true);
-    const controller = new AbortController();
-    abortRef.current = controller;
-
-    let acc = "";
-    await streamFakeReply(
-      text,
-      userMsg.attachments,
-      (chunk) => {
-        acc += chunk;
-        chatStore.replaceLastAssistant(conversation.id, acc);
-        onChange();
-      },
-      () => {
-        setStreaming(false);
-        abortRef.current = null;
-      },
-      controller.signal,
-    );
+    void runAssistant(prev.content, prev.attachments);
   }
 
   function stop() {
