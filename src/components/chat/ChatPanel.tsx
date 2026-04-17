@@ -110,12 +110,12 @@ export function ChatPanel({ conversation, onChange }: Props) {
 
   return (
     <main className="flex-1 flex flex-col items-center overflow-hidden relative bg-canvas">
-      <header className="w-full max-w-3xl pl-20 pr-8 md:px-8 h-20 flex items-center justify-between shrink-0">
+      <header className="w-full max-w-3xl pl-20 pr-5 md:px-8 h-16 md:h-20 flex items-center justify-between shrink-0">
         <div className="flex flex-col">
-          <h2 className="font-serif italic text-2xl text-ink leading-tight">
+          <h2 className="font-serif italic text-lg md:text-2xl text-ink leading-tight">
             {conversation.title}
           </h2>
-          <p className="text-xs text-clay font-medium">
+          <p className="text-[10px] md:text-xs text-clay font-medium">
             Quiet dialogue · {conversation.messages.length} message
             {conversation.messages.length === 1 ? "" : "s"}
           </p>
@@ -129,7 +129,7 @@ export function ChatPanel({ conversation, onChange }: Props) {
       </header>
 
       <div ref={scrollRef} className="flex-1 w-full overflow-y-auto">
-        <div className="w-full max-w-3xl mx-auto px-8 pb-64 pt-6 space-y-10">
+        <div className="w-full max-w-3xl mx-auto px-5 md:px-8 pb-56 md:pb-64 pt-4 md:pt-6 space-y-6 md:space-y-10">
           {isEmpty ? (
             <EmptyState onPick={(p) => setDraft(p)} />
           ) : (
@@ -138,7 +138,7 @@ export function ChatPanel({ conversation, onChange }: Props) {
         </div>
       </div>
 
-      <div className="absolute bottom-0 inset-x-0 flex justify-center px-6 pb-8 pt-16 bg-gradient-to-t from-canvas via-canvas/95 to-transparent pointer-events-none">
+      <div className="absolute bottom-0 inset-x-0 flex justify-center px-4 md:px-6 pb-5 md:pb-8 pt-10 md:pt-16 bg-gradient-to-t from-canvas via-canvas/95 to-transparent pointer-events-none">
         <div className="w-full max-w-3xl pointer-events-auto">
           {pending.length > 0 && (
             <div className="mb-3 flex flex-wrap gap-2">
@@ -159,7 +159,7 @@ export function ChatPanel({ conversation, onChange }: Props) {
               onKeyDown={onKeyDown}
               placeholder="Share a thought, ask a question, or attach a document..."
               rows={1}
-              className="w-full resize-none bg-transparent px-7 pt-6 pb-2 text-[17px] leading-relaxed text-ink placeholder:text-clay/60 focus:outline-none"
+              className="w-full resize-none bg-transparent px-5 md:px-7 pt-4 md:pt-6 pb-2 text-sm md:text-[17px] leading-snug md:leading-relaxed text-ink placeholder:text-clay/60 focus:outline-none"
             />
             <div className="flex items-center justify-between px-3 pb-3">
               <AttachButton onPick={handlePick} />
@@ -183,7 +183,7 @@ export function ChatPanel({ conversation, onChange }: Props) {
               )}
             </div>
           </div>
-          <p className="text-center text-[11px] text-clay/60 mt-3 uppercase tracking-widest">
+          <p className="text-center text-[10px] md:text-[11px] text-clay/60 mt-2 md:mt-3 uppercase tracking-widest">
             Press Enter to send · Shift + Enter for a new line
           </p>
         </div>
@@ -200,12 +200,12 @@ function EmptyState({ onPick }: { onPick: (prompt: string) => void }) {
     "Brainstorm names for a thoughtful note-taking app.",
   ];
   return (
-    <div className="flex flex-col items-center text-center pt-16">
-      <div className="size-16 rounded-3xl bg-felt border border-border-soft flex items-center justify-center font-serif italic text-3xl text-clay shadow-felt mb-6">
+    <div className="flex flex-col items-center text-center pt-8 md:pt-16">
+      <div className="size-12 md:size-16 rounded-3xl bg-felt border border-border-soft flex items-center justify-center font-serif italic text-2xl md:text-3xl text-clay shadow-felt mb-4 md:mb-6">
         A
       </div>
-      <h1 className="font-serif italic text-4xl text-ink mb-3">A space for slower thinking.</h1>
-      <p className="text-clay text-lg max-w-md mb-10 leading-relaxed">
+      <h1 className="font-serif italic text-2xl md:text-4xl text-ink mb-2 md:mb-3 leading-tight">A space for slower thinking.</h1>
+      <p className="text-clay text-sm md:text-lg max-w-md mb-6 md:mb-10 leading-snug md:leading-relaxed">
         Begin a dialogue, attach a document, or start with one of the prompts below.
       </p>
       <div className="grid sm:grid-cols-2 gap-3 w-full max-w-xl">
@@ -213,7 +213,7 @@ function EmptyState({ onPick }: { onPick: (prompt: string) => void }) {
           <button
             key={p}
             onClick={() => onPick(p)}
-            className="text-left px-5 py-4 rounded-2xl bg-canvas border border-border-soft shadow-felt hover:-translate-y-px hover:shadow-felt-lg transition-all text-ink/80 text-sm leading-relaxed"
+            className="text-left px-4 md:px-5 py-3 md:py-4 rounded-2xl bg-canvas border border-border-soft shadow-felt hover:-translate-y-px hover:shadow-felt-lg transition-all text-ink/80 text-xs md:text-sm leading-snug md:leading-relaxed"
           >
             {p}
           </button>
