@@ -1,0 +1,25 @@
+{
+  "name": "Ask Aaron",
+  "short_name": "Ask Aaron",
+  "description": "Chat with a distilled version of Aaron — a conversational portfolio for slower, more thoughtful exchanges.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f5f1ea",
+  "theme_color": "#f5f1ea",
+  "icons": [
+    {
+      "src": "/assets/images/aaron.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/images/aaron.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any"
+    }
+  ]
+}
