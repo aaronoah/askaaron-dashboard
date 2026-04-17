@@ -157,7 +157,13 @@ export function ChatPanel({ conversation, onChange }: Props) {
           {isEmpty ? (
             <EmptyState onPick={(p) => setDraft(p)} />
           ) : (
-            conversation.messages.map((m) => <MessageBubble key={m.id} message={m} />)
+            conversation.messages.map((m, i) => (
+              <MessageBubble
+                key={m.id}
+                message={m}
+                onRetry={m.role === "assistant" && m.error ? () => retryAssistantAt(i) : undefined}
+              />
+            ))
           )}
         </div>
       </div>
