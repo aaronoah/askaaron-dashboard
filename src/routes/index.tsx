@@ -40,15 +40,11 @@ function Index() {
   const [tick, setTick] = useState(0);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  // Hydrate from localStorage on mount, ensure at least one conversation exists.
+  // Hydrate from localStorage on mount.
   useEffect(() => {
-    let list = chatStore.list();
-    if (list.length === 0) {
-      const fresh = chatStore.create();
-      list = [fresh];
-    }
+    const list = chatStore.list();
     setConversations(list);
-    setActiveId(list[0].id);
+    setActiveId(list.length > 0 ? list[0].id : null);
   }, []);
 
   // Re-read store on every change tick.
