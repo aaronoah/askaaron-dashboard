@@ -60,12 +60,20 @@ export function ConversationSidebar({ conversations, activeId, onSelect, onNew, 
               className="size-full object-cover"
             />
           </div>
-          <div className="flex flex-col leading-tight">
+          <div className="flex flex-col leading-tight flex-1 min-w-0">
             <span className="font-serif italic text-2xl tracking-tight text-ink">Aaron.skill</span>
             <span className="text-[10px] font-semibold tracking-[0.2em] uppercase text-clay/70">
               Distilled Aaron at your service
             </span>
           </div>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Close sidebar"
+            className="md:hidden size-9 rounded-xl border border-border-soft bg-canvas flex items-center justify-center text-clay hover:bg-felt transition-colors"
+          >
+            <X className="size-4" />
+          </button>
         </div>
 
         <button
