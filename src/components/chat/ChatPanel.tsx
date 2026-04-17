@@ -129,7 +129,7 @@ export function ChatPanel({ conversation, onChange }: Props) {
       </header>
 
       <div ref={scrollRef} className="flex-1 w-full overflow-y-auto">
-        <div className="w-full max-w-3xl mx-auto px-8 pb-44 pt-6 space-y-10">
+        <div className="w-full max-w-3xl mx-auto px-8 pb-64 pt-6 space-y-10">
           {isEmpty ? (
             <EmptyState onPick={(p) => setDraft(p)} />
           ) : (
