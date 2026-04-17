@@ -16,7 +16,7 @@ export function MessageBubble({ message }: { message: ChatMessage }) {
             </div>
           )}
           {message.content && (
-            <div className="px-4 py-3 md:px-7 md:py-5 rounded-2xl md:rounded-[28px] bg-canvas border border-border-soft shadow-felt">
+            <div className="px-4 py-2.5 md:px-5 md:py-3 rounded-2xl md:rounded-[22px] bg-canvas border border-border-soft shadow-felt">
               <p className="text-sm md:text-[17px] leading-snug md:leading-relaxed text-ink whitespace-pre-wrap">
                 {message.content}
               </p>
