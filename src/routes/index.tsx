@@ -73,13 +73,11 @@ function Index() {
 
   function handleDelete(id: string) {
     chatStore.remove(id);
-    let list = chatStore.list();
-    if (list.length === 0) {
-      const fresh = chatStore.create();
-      list = [fresh];
-    }
+    const list = chatStore.list();
     setConversations(list);
-    if (activeId === id) setActiveId(list[0].id);
+    if (activeId === id) {
+      setActiveId(list.length > 0 ? list[0].id : null);
+    }
   }
 
   return (
