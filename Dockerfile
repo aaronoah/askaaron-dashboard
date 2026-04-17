@@ -31,17 +31,13 @@ WORKDIR /app
 ENV NODE_ENV=production
 ENV PORT=8080
 
-# Bring in the built artifacts and what wrangler needs at runtime
-COPY --from=builder /app/package.json ./package.json
-COPY --from=builder /app/package-lock.json* ./
-COPY --from=builder /app/wrangler.jsonc ./wrangler.jsonc
+# Install a simple static server
+RUN npm install -g serve
+
+# Copy Vite build output only
 COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/node_modules ./node_modules
 
 EXPOSE 8080
 
-# Render sets $PORT at runtime; fall back to 8080 for local `docker run`.
-# `wrangler dev --local` runs the production build under workerd (the same
-# runtime Cloudflare uses in production) — it is NOT a hot-reload dev server
-# when pointed at a built bundle.
-CMD ["sh", "-c", "npx wrangler dev dist/server/index.js --ip 0.0.0.0 --port ${PORT:-8080} --local"]
+# Serve static Vite build
+CMD ["sh", "-c", "serve -s dist -l ${PORT:-8080}"]
