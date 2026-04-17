@@ -42,15 +42,24 @@ export async function streamFakeReply(
   signal?: AbortSignal,
 ) {
   const full = craftReply(prompt, attachments);
-  // Stream by words for a natural typing feel.
-  const tokens = full.split(/(\s+)/);
-  for (const token of tokens) {
+
+  // 1) Thinking phase — empty assistant bubble shows animated dots.
+  const thinkMs = 1100 + Math.random() * 900;
+  const start = Date.now();
+  while (Date.now() - start < thinkMs) {
     if (signal?.aborted) {
       onDone();
       return;
     }
-    await new Promise((r) => setTimeout(r, 18 + Math.random() * 32));
-    onDelta(token);
+    await new Promise((r) => setTimeout(r, 60));
   }
+
+  if (signal?.aborted) {
+    onDone();
+    return;
+  }
+
+  // 2) Deliver the full response in one go.
+  onDelta(full);
   onDone();
 }
