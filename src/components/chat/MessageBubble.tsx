@@ -1,6 +1,7 @@
 import ReactMarkdown from "react-markdown";
 import type { ChatMessage } from "@/lib/chat-store";
 import { AttachmentChip } from "./Attachment";
+import aaronAvatar from "@/assets/aaron.jpg";
 
 export function MessageBubble({ message }: { message: ChatMessage }) {
   if (message.role === "user") {
@@ -22,8 +23,8 @@ export function MessageBubble({ message }: { message: ChatMessage }) {
             </div>
           )}
         </div>
-        <div className="shrink-0 size-10 rounded-2xl bg-clay text-canvas flex items-center justify-center font-serif italic text-lg">
-          You
+        <div className="shrink-0 size-10 rounded-2xl overflow-hidden ring-1 ring-border-soft shadow-felt">
+          <img src={aaronAvatar} alt="You" className="size-full object-cover" />
         </div>
       </div>
     );
