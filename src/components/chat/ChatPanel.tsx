@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { ArrowUp, Square } from "lucide-react";
 import type { Conversation, ChatMessage, Attachment } from "@/lib/chat-store";
-import { chatStore } from "@/lib/chat-store";
+import { chatStore, formatRelative } from "@/lib/chat-store";
 import { streamFakeReply } from "@/lib/fake-ai";
 import { MessageBubble } from "./MessageBubble";
 import { AttachButton, AttachmentChip } from "./Attachment";
@@ -116,8 +116,8 @@ export function ChatPanel({ conversation, onChange }: Props) {
             {conversation.title}
           </h2>
           <p className="text-[10px] md:text-xs text-clay font-medium">
-            Quiet dialogue · {conversation.messages.length} message
-            {conversation.messages.length === 1 ? "" : "s"}
+            {conversation.messages.length} message
+            {conversation.messages.length === 1 ? "" : "s"} · {formatRelative(conversation.updatedAt)}
           </p>
         </div>
         <div className="flex items-center gap-3">
