@@ -215,20 +215,59 @@ export function ConversationSidebar({ conversations, activeId, onSelect, onNew, 
           </div>
         </div>
 
-        <button
-          type="button"
-          onClick={() => {
-            if (typeof window !== "undefined") {
-              window.open("https://www.paypal.me/aaron", "_blank", "noopener,noreferrer");
-            }
-          }}
-          className="group w-full flex items-center gap-3 px-4 py-3 rounded-2xl bg-canvas border border-border-soft shadow-felt transition-all hover:-translate-y-px hover:shadow-felt-lg"
-        >
-          <div className="size-9 rounded-xl bg-moss/15 border border-moss/30 flex items-center justify-center">
-            <HandCoins className="size-4 text-moss" />
+        <div className="relative group/donate">
+          <button
+            type="button"
+            onClick={() => {
+              if (typeof window !== "undefined") {
+                window.open("https://www.paypal.me/aaron", "_blank", "noopener,noreferrer");
+              }
+            }}
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-2xl bg-canvas border border-border-soft shadow-felt transition-all hover:-translate-y-px hover:shadow-felt-lg"
+          >
+            <div className="size-9 rounded-xl bg-moss/15 border border-moss/30 flex items-center justify-center">
+              <HandCoins className="size-4 text-moss" />
+            </div>
+            <span className="flex-1 text-left text-sm font-medium text-ink">Donate to Aaron</span>
+          </button>
+
+          <div
+            className="absolute left-1/2 bottom-full mb-3 -translate-x-1/2 opacity-0 invisible translate-y-1 group-hover/donate:opacity-100 group-hover/donate:visible group-hover/donate:translate-y-0 transition-all duration-200 z-20"
+            role="menu"
+          >
+            <div className="relative bg-canvas border border-border-soft rounded-2xl shadow-felt-lg p-2 flex items-center gap-1 min-w-[180px]">
+              <a
+                href="https://venmo.com/aaron"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 flex flex-col items-center gap-1 px-3 py-2 rounded-xl hover:bg-felt transition-colors"
+              >
+                <div className="size-8 rounded-lg bg-[#3D95CE] flex items-center justify-center">
+                  <svg viewBox="0 0 24 24" className="size-4 fill-canvas" aria-hidden="true">
+                    <path d="M19.5 3c.74 1.22 1.07 2.48 1.07 4.07 0 5.06-4.32 11.63-7.83 16.24H4.78L1.5 4.49l7.16-.68 1.74 13.96c1.62-2.64 3.62-6.79 3.62-9.62 0-1.55-.27-2.6-.69-3.47z" />
+                  </svg>
+                </div>
+                <span className="text-[11px] font-medium text-ink">Venmo</span>
+              </a>
+              <a
+                href="https://www.paypal.me/aaron"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 flex flex-col items-center gap-1 px-3 py-2 rounded-xl hover:bg-felt transition-colors"
+              >
+                <div className="size-8 rounded-lg bg-[#003087] flex items-center justify-center">
+                  <svg viewBox="0 0 24 24" className="size-4 fill-canvas" aria-hidden="true">
+                    <path d="M7.27 21.5H4.5a.5.5 0 01-.5-.58L6.6 4.42A.6.6 0 017.2 4h6.42c2.95 0 4.93 1.55 4.4 4.79-.6 3.66-3.36 5.24-6.55 5.24H9.05a.6.6 0 00-.6.5l-.58 4.16a.5.5 0 01-.6.41zm9.94-13.34c.4 2.5-1.43 4.4-4.04 4.4h-1.92a.5.5 0 00-.5.42l-.78 5.55a.5.5 0 01-.5.43h-.04c.94.5 2.13.7 3.5.7 3.18 0 5.94-1.58 6.54-5.24.42-2.55-.62-4.13-2.26-5.06-.04-.4-.13-.8-.26-1.2z" />
+                  </svg>
+                </div>
+                <span className="text-[11px] font-medium text-ink">PayPal</span>
+              </a>
+              <div className="absolute left-1/2 -translate-x-1/2 top-full">
+                <div className="size-3 rotate-45 bg-canvas border-r border-b border-border-soft -translate-y-1/2" />
+              </div>
+            </div>
           </div>
-          <span className="flex-1 text-left text-sm font-medium text-ink">Donate to Aaron</span>
-        </button>
+        </div>
       </div>
     </aside>
   );
