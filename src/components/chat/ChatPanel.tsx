@@ -176,7 +176,7 @@ export function ChatPanel({ conversation, onChange }: Props) {
       <div ref={scrollRef} className="flex-1 w-full overflow-y-auto">
         <div className="w-full max-w-3xl mx-auto px-5 md:px-8 pb-56 md:pb-64 pt-4 md:pt-6 space-y-6 md:space-y-10">
           {isEmpty ? (
-            <EmptyState onPick={(p) => void sendDirect(p)} />
+            <EmptyState onPick={(p) => void sendDirect(p)} t={t} />
           ) : (
             conversation.messages.map((m, i) => (
               <MessageBubble
@@ -208,7 +208,7 @@ export function ChatPanel({ conversation, onChange }: Props) {
               value={draft}
               onChange={(e) => setDraft(e.target.value)}
               onKeyDown={onKeyDown}
-              placeholder="Share a thought, ask a question, or attach a document..."
+              placeholder={t("chat.placeholder")}
               rows={1}
               className="w-full resize-none bg-transparent px-5 md:px-7 pt-4 md:pt-6 pb-2 text-sm md:text-[17px] leading-snug md:leading-relaxed text-ink placeholder:text-clay/60 focus:outline-none"
             />
@@ -220,7 +220,7 @@ export function ChatPanel({ conversation, onChange }: Props) {
                   className="flex items-center gap-2 px-5 py-2.5 bg-felt text-ink border border-border-soft rounded-2xl font-semibold text-sm hover:bg-border-soft/40 transition-colors"
                 >
                   <Square className="size-4 fill-current" />
-                  Stop
+                  {t("chat.stop")}
                 </button>
               ) : (
                 <button
@@ -228,14 +228,14 @@ export function ChatPanel({ conversation, onChange }: Props) {
                   disabled={!draft.trim() && pending.length === 0}
                   className="flex items-center gap-2 px-5 py-2.5 bg-clay text-canvas rounded-2xl font-semibold text-sm shadow-felt hover:brightness-105 active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed transition-all"
                 >
-                  Send
+                  {t("chat.send")}
                   <ArrowUp className="size-4" />
                 </button>
               )}
             </div>
           </div>
           <p className="text-center text-[10px] md:text-[11px] text-clay/60 mt-2 md:mt-3 uppercase tracking-widest">
-            Press Enter to send · Shift + Enter for a new line
+            {t("chat.hint")}
           </p>
         </div>
       </div>
@@ -243,10 +243,16 @@ export function ChatPanel({ conversation, onChange }: Props) {
   );
 }
 
-function EmptyState({ onPick }: { onPick: (prompt: string) => void }) {
+function EmptyState({
+  onPick,
+  t,
+}: {
+  onPick: (prompt: string) => void;
+  t: (path: string, vars?: Record<string, string | number>) => string;
+}) {
   const prompts: { text: string; icon?: React.ReactNode }[] = [
     {
-      text: "Book an Adplist career coach session with Aaron",
+      text: t("chat.prompts.coach"),
       icon: (
         <img
           src={shirtIcon}
@@ -259,7 +265,7 @@ function EmptyState({ onPick }: { onPick: (prompt: string) => void }) {
       ),
     },
     {
-      text: "Book an mock interview with Aaron",
+      text: t("chat.prompts.mock"),
       icon: (
         <span className="inline-flex size-5 shrink-0 items-center justify-center rounded-md bg-[#2D8CFF] text-white">
           <Video className="size-3" strokeWidth={2.5} />
@@ -267,7 +273,7 @@ function EmptyState({ onPick }: { onPick: (prompt: string) => void }) {
       ),
     },
     {
-      text: "Consult tech, AI or movie questions with Aaron",
+      text: t("chat.prompts.consult"),
       icon: (
         <img
           src={laptopIcon}
@@ -280,7 +286,7 @@ function EmptyState({ onPick }: { onPick: (prompt: string) => void }) {
       ),
     },
     {
-      text: "Date with Aaron",
+      text: t("chat.prompts.date"),
       icon: <Heart className="size-5 shrink-0 text-red-500 fill-red-500" />,
     },
   ];
@@ -289,9 +295,11 @@ function EmptyState({ onPick }: { onPick: (prompt: string) => void }) {
       <div className="size-12 md:size-16 rounded-3xl overflow-hidden ring-1 ring-border-soft shadow-felt mb-4 md:mb-6">
         <img src={aaronAvatar} alt="Aaron" className="size-full object-cover" />
       </div>
-      <h1 className="font-serif italic text-2xl md:text-4xl text-ink mb-2 md:mb-3 leading-tight">Distilled Aaron at your service</h1>
+      <h1 className="font-serif italic text-2xl md:text-4xl text-ink mb-2 md:mb-3 leading-tight">
+        {t("chat.emptyTitle")}
+      </h1>
       <p className="text-clay text-sm md:text-lg max-w-md mb-6 md:mb-10 leading-snug md:leading-relaxed">
-        Begin a dialogue, attach a document, or start with one of the prompts below.
+        {t("chat.emptySubtitle")}
       </p>
       <div className="grid sm:grid-cols-2 gap-3 w-full max-w-xl">
         {prompts.map((p) => (

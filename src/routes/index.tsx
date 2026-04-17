@@ -5,6 +5,7 @@ import { chatStore, type Conversation } from "@/lib/chat-store";
 import { ConversationSidebar } from "@/components/chat/ConversationSidebar";
 import { ChatPanel } from "@/components/chat/ChatPanel";
 import { CookieConsent } from "@/components/CookieConsent";
+import { useTranslation } from "@/i18n/I18nProvider";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -39,6 +40,7 @@ function Index() {
   const [activeId, setActiveId] = useState<string | null>(null);
   const [tick, setTick] = useState(0);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { t } = useTranslation();
 
   // Hydrate from localStorage on mount.
   useEffect(() => {
@@ -92,25 +94,25 @@ function Index() {
       <button
         type="button"
         onClick={() => setSidebarOpen(true)}
-        aria-label="Open sidebar"
+        aria-label={t("sidebar.openSidebar")}
         className="md:hidden fixed top-4 left-4 z-20 size-10 rounded-2xl bg-canvas border border-border-soft shadow-felt flex items-center justify-center text-ink hover:bg-felt transition-colors"
       >
         <Menu className="size-5" />
       </button>
 
       {active ? (
-        <ChatPanel conversation={active} onChange={() => setTick((t) => t + 1)} />
+        <ChatPanel conversation={active} onChange={() => setTick((n) => n + 1)} />
       ) : (
         <main className="flex-1 flex flex-col items-center justify-center gap-4 text-center px-6">
-          <p className="font-serif italic text-2xl md:text-3xl text-ink">No conversations yet</p>
+          <p className="font-serif italic text-2xl md:text-3xl text-ink">{t("page.noConversationsTitle")}</p>
           <p className="text-sm text-clay max-w-sm">
-            Start a new dialogue to chat with a distilled version of Aaron.
+            {t("page.noConversationsSubtitle")}
           </p>
           <button
             onClick={handleNew}
             className="mt-2 px-5 py-2.5 rounded-2xl bg-clay text-canvas text-sm font-semibold shadow-felt hover:brightness-105 active:scale-[0.98] transition-all"
           >
-            New dialogue
+            {t("sidebar.newDialogue")}
           </button>
         </main>
       )}

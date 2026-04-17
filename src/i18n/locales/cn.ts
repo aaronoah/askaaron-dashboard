@@ -43,6 +43,10 @@ export const cn: Translations = {
       date: "和 Aaron 约会",
     },
   },
+  page: {
+    noConversationsTitle: "还没有对话",
+    noConversationsSubtitle: "开启一段新的对话,与提炼版 Aaron 聊聊。",
+  },
   consent: {
     label: "Cookie 同意",
     body: "本网站使用 Cookie 以确保您获得最佳的浏览体验。如需了解我们的隐私实践,请查看我们的",
