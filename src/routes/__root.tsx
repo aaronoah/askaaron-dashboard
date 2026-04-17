@@ -27,21 +27,28 @@ function NotFoundComponent() {
 export const Route = createRootRoute({
   head: () => ({
     meta: [
-      { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { charSet: "UTF-8" },
+      { name: "viewport", content: "width=device-width, initial-scale=1.0" },
+      { title: "Ask Aaron" },
+      { name: "description", content: "Chat with a distilled version of Aaron." },
+      { name: "author", content: "Aaron" },
+      { property: "og:title", content: "Ask Aaron" },
+      { property: "og:description", content: "Chat with a distilled version of Aaron." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
+      { rel: "stylesheet", href: appCss },
+      { rel: "icon", type: "image/jpeg", href: "/assets/images/aaron.jpg" },
+    ],
+    scripts: [
       {
-        rel: "stylesheet",
-        href: appCss,
+        src: "https://www.googletagmanager.com/gtag/js?id=G-TX0KXT1YNF",
+        async: true,
+      },
+      {
+        children:
+          "window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config', 'G-TX0KXT1YNF');",
       },
     ],
   }),
