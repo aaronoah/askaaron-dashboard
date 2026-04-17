@@ -178,7 +178,7 @@ export function ConversationSidebar({ conversations, activeId, onSelect, onNew, 
             </button>
 
             {/* Tooltip */}
-            <div className="pointer-events-none absolute right-full top-1/2 -translate-y-1/2 mr-2 px-2.5 py-1 rounded-md bg-ink text-canvas text-[11px] font-medium whitespace-nowrap opacity-0 group-hover/share:opacity-100 transition-opacity duration-150 z-10">
+            <div className="pointer-events-none absolute left-full top-1/2 -translate-y-1/2 ml-2 px-2.5 py-1 rounded-md bg-ink text-canvas text-[11px] font-medium whitespace-nowrap opacity-0 group-hover/share:opacity-100 transition-opacity duration-150 z-10">
               Share on social media
             </div>
 
@@ -239,7 +239,7 @@ export function ConversationSidebar({ conversations, activeId, onSelect, onNew, 
             </button>
 
             {/* Tooltip */}
-            <div className="pointer-events-none absolute right-full top-1/2 -translate-y-1/2 mr-2 px-2.5 py-1 rounded-md bg-ink text-canvas text-[11px] font-medium whitespace-nowrap opacity-0 group-hover/donate:opacity-100 transition-opacity duration-150 z-10">
+            <div className="pointer-events-none absolute left-full top-1/2 -translate-y-1/2 ml-2 px-2.5 py-1 rounded-md bg-ink text-canvas text-[11px] font-medium whitespace-nowrap opacity-0 group-hover/donate:opacity-100 transition-opacity duration-150 z-10">
               Donate to Aaron
             </div>
 
