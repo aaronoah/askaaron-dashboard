@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { Plus, Trash2, Search, Share2, HandCoins, X, ExternalLink } from "lucide-react";
 import type { Conversation } from "@/lib/chat-store";
-import { formatRelative } from "@/lib/chat-store";
+import { formatRelative, NEW_DIALOGUE_TITLE } from "@/lib/chat-store";
 import { cn } from "@/lib/utils";
 import { useTranslation } from "@/i18n/I18nProvider";
+import { useRelativeStrings } from "@/i18n/useRelativeTime";
 import aaronAvatar from "@/assets/aaron.jpg";
 
 type Props = {
@@ -20,6 +21,7 @@ export function ConversationSidebar({ conversations, activeId, onSelect, onNew, 
   const [query, setQuery] = useState("");
   const [focused, setFocused] = useState(false);
   const { t, locale, setLocale } = useTranslation();
+  const relStrings = useRelativeStrings();
 
   useEffect(() => {
     // Prefetch fonts (TanStack Start handles head, but this is a no-op safety).
@@ -185,9 +187,9 @@ export function ConversationSidebar({ conversations, activeId, onSelect, onNew, 
                         active ? "text-ink" : "text-ink/70 group-hover:text-ink",
                       )}
                     >
-                      {c.title}
+                      {c.title === NEW_DIALOGUE_TITLE ? t("sidebar.newDialogue") : c.title}
                     </p>
-                    <p className="text-[12px] text-clay/70">{formatRelative(c.updatedAt)}</p>
+                    <p className="text-[12px] text-clay/70">{formatRelative(c.updatedAt, relStrings)}</p>
                   </div>
                   <span
                     role="button"

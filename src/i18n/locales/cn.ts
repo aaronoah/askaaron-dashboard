@@ -19,6 +19,14 @@ export const cn: Translations = {
     shareMore: "更多",
     donateLabel: "支持 Aaron",
   },
+  time: {
+    justNow: "刚刚",
+    minAgo: "{n} 分钟前",
+    hourAgo: "{n} 小时前",
+    hoursAgo: "{n} 小时前",
+    yesterday: "昨天",
+    daysAgo: "{n} 天前",
+  },
   chat: {
     headerMessages: "{count} 条消息",
     headerMessagesPlural: "{count} 条消息",

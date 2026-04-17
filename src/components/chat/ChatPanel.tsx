@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { ArrowUp, Square, Video, Heart } from "lucide-react";
 import type { Conversation, ChatMessage, Attachment } from "@/lib/chat-store";
-import { chatStore, formatRelative } from "@/lib/chat-store";
+import { chatStore, formatRelative, NEW_DIALOGUE_TITLE } from "@/lib/chat-store";
 import { streamFakeReply } from "@/lib/fake-ai";
+import { useTranslation } from "@/i18n/I18nProvider";
+import { useRelativeStrings } from "@/i18n/useRelativeTime";
 import { MessageBubble } from "./MessageBubble";
 import { AttachButton, AttachmentChip } from "./Attachment";
 import aaronAvatar from "@/assets/aaron.jpg";
@@ -21,6 +23,8 @@ export function ChatPanel({ conversation, onChange }: Props) {
   const abortRef = useRef<AbortController | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const { t } = useTranslation();
+  const relStrings = useRelativeStrings();
 
   // Auto-grow textarea
   useEffect(() => {
@@ -157,11 +161,14 @@ export function ChatPanel({ conversation, onChange }: Props) {
       <header className="w-full max-w-3xl pl-20 pr-5 md:px-8 h-16 md:h-20 flex items-center justify-between shrink-0">
         <div className="flex flex-col">
           <h2 className="font-serif italic text-lg md:text-2xl text-ink leading-tight">
-            {conversation.title}
+            {conversation.title === NEW_DIALOGUE_TITLE ? t("sidebar.newDialogue") : conversation.title}
           </h2>
           <p className="text-[10px] md:text-xs text-clay font-medium">
-            {conversation.messages.length} message
-            {conversation.messages.length === 1 ? "" : "s"} · {formatRelative(conversation.updatedAt)}
+            {conversation.messages.length === 1
+              ? t("chat.headerMessages", { count: conversation.messages.length })
+              : t("chat.headerMessagesPlural", { count: conversation.messages.length })}
+            {" · "}
+            {formatRelative(conversation.updatedAt, relStrings)}
           </p>
         </div>
       </header>
