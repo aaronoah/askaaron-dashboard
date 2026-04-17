@@ -1,9 +1,15 @@
 import ReactMarkdown from "react-markdown";
+import { AlertCircle, RefreshCw } from "lucide-react";
 import type { ChatMessage } from "@/lib/chat-store";
 import { AttachmentChip } from "./Attachment";
 import aaronAvatar from "@/assets/aaron.jpg";
 
-export function MessageBubble({ message }: { message: ChatMessage }) {
+type Props = {
+  message: ChatMessage;
+  onRetry?: () => void;
+};
+
+export function MessageBubble({ message, onRetry }: Props) {
   if (message.role === "user") {
     return (
       <div className="flex gap-3 md:gap-6 justify-end">
@@ -43,7 +49,24 @@ export function MessageBubble({ message }: { message: ChatMessage }) {
           prose-li:text-sm md:prose-li:text-[17px] prose-li:leading-snug md:prose-li:leading-relaxed prose-li:my-0.5
           prose-ul:my-2 md:prose-ul:my-3 prose-ol:my-2 md:prose-ol:my-3
           prose-code:bg-felt prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-xs md:prose-code:text-sm prose-code:before:content-none prose-code:after:content-none">
-          {message.content ? (
+          {message.error ? (
+            <div className="flex flex-col items-start gap-3">
+              <div className="flex items-start gap-2 px-4 py-3 rounded-2xl bg-destructive/10 border border-destructive/30 text-destructive">
+                <AlertCircle className="size-4 mt-0.5 shrink-0" />
+                <p className="text-sm leading-snug">{message.error}</p>
+              </div>
+              {onRetry && (
+                <button
+                  type="button"
+                  onClick={onRetry}
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-canvas border border-border-soft shadow-felt text-sm font-medium text-ink hover:-translate-y-px hover:shadow-felt-lg transition-all"
+                >
+                  <RefreshCw className="size-3.5" />
+                  Retry
+                </button>
+              )}
+            </div>
+          ) : message.content ? (
             <ReactMarkdown>{message.content}</ReactMarkdown>
           ) : (
             <span className="inline-flex gap-1 items-center text-clay">

@@ -15,6 +15,8 @@ export type ChatMessage = {
   content: string;
   createdAt: number;
   attachments?: Attachment[];
+  /** Set on assistant messages when generation failed. */
+  error?: string;
 };
 
 export type Conversation = {
@@ -86,7 +88,7 @@ export const chatStore = {
     }
     write(list);
   },
-  replaceLastAssistant(id: string, content: string) {
+  replaceLastAssistant(id: string, content: string, error?: string) {
     const list = read();
     const idx = list.findIndex((c) => c.id === id);
     if (idx === -1) return;
@@ -94,6 +96,7 @@ export const chatStore = {
     const last = msgs[msgs.length - 1];
     if (last && last.role === "assistant") {
       last.content = content;
+      last.error = error;
       list[idx].updatedAt = Date.now();
       write(list);
     }
