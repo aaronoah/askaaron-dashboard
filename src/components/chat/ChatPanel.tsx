@@ -222,7 +222,7 @@ function EmptyState({ onPick }: { onPick: (prompt: string) => void }) {
     "Book an Adplist career coach session with Aaron",
     "Book an mock interview with Aaron",
     "Consult tech, AI or movie questions with Aaron",
-    "Brainstorm names for a thoughtful note-taking app.",
+    "Date with Aaron",
   ];
   return (
     <div className="flex flex-col items-center text-center pt-8 md:pt-16">
