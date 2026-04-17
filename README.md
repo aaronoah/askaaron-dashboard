@@ -124,21 +124,25 @@ npx wrangler deploy
 
 See the [Lovable self-hosting guide](https://docs.lovable.dev/tips-tricks/self-hosting) for the full walkthrough, including environment variables and DNS.
 
-### Option C — Docker
+### Option C — Docker (deployment image)
 
-A `Dockerfile` is included at the repo root. It builds the SSR bundle and runs it inside a container using Wrangler's local Workers runtime — handy for self-hosted boxes, internal staging, or platforms like Fly.io / Railway / Render that accept a container image.
+A `Dockerfile` is included at the repo root. It is a **deployment image**: it builds the SSR bundle and pushes it to Cloudflare's edge via `wrangler deploy`. It is meant to be run once per release (locally or from CI) — not as a long-running server.
 
 ```bash
-# 1. Build the image
-docker build -t aaron-skill .
+# 1. Build the deployment image
+docker build -t aaron-skill-deploy .
 
-# 2. Run it (app will be available at http://localhost:8080)
-docker run --rm -p 8080:8080 aaron-skill
+# 2. Run it once to deploy to Cloudflare Workers
+docker run --rm \
+  -e CLOUDFLARE_API_TOKEN=your_token \
+  -e CLOUDFLARE_ACCOUNT_ID=your_account_id \
+  aaron-skill-deploy
 ```
 
 **Notes:**
-- The container runs `wrangler dev --local`, which serves the built worker via the official `workerd` runtime. This is suitable for self-hosting; for production on Cloudflare's edge, prefer **Option B** (`npx wrangler deploy`).
-- To inject environment variables, pass them with `-e KEY=value` or use a `--env-file`.
+- The `CLOUDFLARE_API_TOKEN` needs the **Edit Cloudflare Workers** permission. Create one at [dash.cloudflare.com → My Profile → API Tokens](https://dash.cloudflare.com/profile/api-tokens).
+- This image is ideal for CI/CD pipelines (GitHub Actions, GitLab CI, etc.) where you want a hermetic, reproducible deployment environment.
+- For local development, use `npm run dev` instead — the container is not designed to serve traffic.
 
 ---
 
