@@ -214,8 +214,12 @@ export function ChatPanel({ conversation, onChange }: Props) {
               rows={1}
               className="w-full resize-none bg-transparent px-5 md:px-7 pt-4 md:pt-6 pb-2 text-sm md:text-[17px] leading-snug md:leading-relaxed text-ink placeholder:text-clay/60 focus:outline-none"
             />
-            <div className="flex items-center justify-between px-3 pb-3">
+            <div className="flex items-center justify-between px-3 pb-3 gap-2">
               <AttachButton onPick={handlePick} />
+              <div className="flex items-center gap-3 min-w-0">
+                <span className="hidden sm:inline text-[11px] md:text-xs font-mono text-clay/70 truncate">
+                  google/gemma-4-31B-it:together
+                </span>
               {streaming ? (
                 <button
                   onClick={stop}
