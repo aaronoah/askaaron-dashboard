@@ -1,6 +1,7 @@
 import ReactMarkdown from "react-markdown";
 import type { ChatMessage } from "@/lib/chat-store";
 import { AttachmentChip } from "./Attachment";
+import aaronAvatar from "@/assets/aaron.jpg";
 
 export function MessageBubble({ message }: { message: ChatMessage }) {
   if (message.role === "user") {
