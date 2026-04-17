@@ -32,8 +32,8 @@ export function ConversationSidebar({ conversations, activeId, onSelect, onNew, 
 
   return (
     <aside className="hidden md:flex w-80 shrink-0 flex-col border-r border-border-soft bg-felt/60 backdrop-blur-sm">
-      <div className="p-7 pb-4">
-        <div className="flex items-center gap-3 mb-9">
+      <div className="px-5 pt-5 pb-3">
+        <div className="flex items-center gap-3 mb-5">
           <div className="size-10 rounded-2xl overflow-hidden shadow-felt ring-1 ring-border-soft shrink-0">
             <img
               src={aaronAvatar}
@@ -78,8 +78,8 @@ export function ConversationSidebar({ conversations, activeId, onSelect, onNew, 
         </div>
       </div>
 
-      <nav className="flex-1 overflow-y-auto px-4 py-4">
-        <h3 className="px-4 text-[11px] font-bold uppercase tracking-[0.18em] text-clay/60 mb-4">
+      <nav className="flex-1 overflow-y-auto px-3 py-2">
+        <h3 className="px-3 text-[11px] font-bold uppercase tracking-[0.18em] text-clay/60 mb-2">
           {trimmed.length > 0 ? "Search results" : "Recent thoughts"}
         </h3>
 
@@ -158,7 +158,7 @@ export function ConversationSidebar({ conversations, activeId, onSelect, onNew, 
         </ul>
       </nav>
 
-      <div className="p-5 border-t border-border-soft">
+      <div className="px-5 py-3 border-t border-border-soft">
         <div className="flex items-center justify-center gap-3">
           <div className="relative group/share">
             <button
