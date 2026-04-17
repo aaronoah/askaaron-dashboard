@@ -1,48 +1,78 @@
-// Cookie-based user consent + anonymous user ID.
-// When the user accepts, we set two cookies:
-//   arlow_consent=accepted
-//   arlow_uid=<uuid>
-// The uid is then attached to every new conversation and every message.
+// User session token stored in localStorage when the user accepts cookies.
+// Key: "user", value: a UUID string generated on first visit.
+//
+// Flow:
+// - On first visit we generate a UUID in memory (pending token).
+// - The cookie banner is shown if localStorage["user"] is missing.
+// - If the user accepts, we persist the pending token under "user".
+// - If the user declines, we do not persist anything (banner will show again next visit).
 
-const CONSENT_COOKIE = "arlow_consent";
-const UID_COOKIE = "arlow_uid";
-const ONE_YEAR = 60 * 60 * 24 * 365;
+const STORAGE_KEY = "user";
 
-function setCookie(name: string, value: string, maxAgeSeconds: number) {
-  if (typeof document === "undefined") return;
-  const secure = typeof window !== "undefined" && window.location.protocol === "https:" ? "; Secure" : "";
-  document.cookie = `${name}=${encodeURIComponent(value)}; Max-Age=${maxAgeSeconds}; Path=/; SameSite=Lax${secure}`;
+function generateUuid(): string {
+  if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+    return crypto.randomUUID();
+  }
+  // Fallback (non-crypto) — extremely unlikely to be hit in modern browsers.
+  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
+    const r = (Math.random() * 16) | 0;
+    const v = c === "x" ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
 }
 
-function getCookie(name: string): string | null {
-  if (typeof document === "undefined") return null;
-  const match = document.cookie
-    .split("; ")
-    .find((row) => row.startsWith(`${name}=`));
-  return match ? decodeURIComponent(match.split("=")[1]) : null;
+function readStored(): string | null {
+  if (typeof window === "undefined") return null;
+  try {
+    return window.localStorage.getItem(STORAGE_KEY);
+  } catch {
+    return null;
+  }
+}
+
+function writeStored(token: string) {
+  if (typeof window === "undefined") return;
+  try {
+    window.localStorage.setItem(STORAGE_KEY, token);
+  } catch {
+    // ignore quota / disabled storage
+  }
+}
+
+// Pending token generated for the current visit until the user decides.
+let pendingToken: string | null = null;
+
+function getPendingToken(): string {
+  if (!pendingToken) pendingToken = generateUuid();
+  return pendingToken;
 }
 
 export const consent = {
+  /** True when a stored session token already exists (banner should be hidden). */
   hasDecision(): boolean {
-    return getCookie(CONSENT_COOKIE) !== null;
+    return readStored() !== null;
   },
   isAccepted(): boolean {
-    return getCookie(CONSENT_COOKIE) === "accepted";
+    return readStored() !== null;
   },
+  /** Persist the pending session token under localStorage["user"] and return it. */
   accept(): string {
-    setCookie(CONSENT_COOKIE, "accepted", ONE_YEAR);
-    let uid = getCookie(UID_COOKIE);
-    if (!uid) {
-      uid = crypto.randomUUID();
-      setCookie(UID_COOKIE, uid, ONE_YEAR);
-    }
-    return uid;
+    const existing = readStored();
+    if (existing) return existing;
+    const token = getPendingToken();
+    writeStored(token);
+    return token;
   },
+  /** No-op for storage. Banner will appear again on next visit. */
   decline() {
-    setCookie(CONSENT_COOKIE, "declined", ONE_YEAR);
+    // intentionally do nothing — we only persist on accept
   },
+  /** The active session token, or null if the user hasn't accepted yet. */
   getUid(): string | null {
-    if (!this.isAccepted()) return null;
-    return getCookie(UID_COOKIE);
+    return readStored();
+  },
+  /** The token that *would* be stored on accept (useful for debugging). */
+  peekPendingToken(): string {
+    return getPendingToken();
   },
 };
