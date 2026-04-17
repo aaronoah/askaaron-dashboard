@@ -221,7 +221,7 @@ function EmptyState({ onPick }: { onPick: (prompt: string) => void }) {
   const prompts = [
     "Book an Adplist session with Aaron",
     "Book an mock interview with Aaron",
-    "Summarize the key idea in this attached document.",
+    "Consult tech, AI or movie questions with Aaron",
     "Brainstorm names for a thoughtful note-taking app.",
   ];
   return (
