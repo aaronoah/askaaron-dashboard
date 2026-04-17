@@ -5,6 +5,7 @@ import { chatStore, formatRelative } from "@/lib/chat-store";
 import { streamFakeReply } from "@/lib/fake-ai";
 import { MessageBubble } from "./MessageBubble";
 import { AttachButton, AttachmentChip } from "./Attachment";
+import aaronAvatar from "@/assets/aaron.jpg";
 
 type Props = {
   conversation: Conversation;
