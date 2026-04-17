@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { Menu } from "lucide-react";
 import { chatStore, type Conversation } from "@/lib/chat-store";
 import { ConversationSidebar } from "@/components/chat/ConversationSidebar";
 import { ChatPanel } from "@/components/chat/ChatPanel";
