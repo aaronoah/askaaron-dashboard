@@ -40,15 +40,11 @@ function Index() {
   const [tick, setTick] = useState(0);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  // Hydrate from localStorage on mount, ensure at least one conversation exists.
+  // Hydrate from localStorage on mount.
   useEffect(() => {
-    let list = chatStore.list();
-    if (list.length === 0) {
-      const fresh = chatStore.create();
-      list = [fresh];
-    }
+    const list = chatStore.list();
     setConversations(list);
-    setActiveId(list[0].id);
+    setActiveId(list.length > 0 ? list[0].id : null);
   }, []);
 
   // Re-read store on every change tick.
@@ -73,13 +69,11 @@ function Index() {
 
   function handleDelete(id: string) {
     chatStore.remove(id);
-    let list = chatStore.list();
-    if (list.length === 0) {
-      const fresh = chatStore.create();
-      list = [fresh];
-    }
+    const list = chatStore.list();
     setConversations(list);
-    if (activeId === id) setActiveId(list[0].id);
+    if (activeId === id) {
+      setActiveId(list.length > 0 ? list[0].id : null);
+    }
   }
 
   return (
@@ -107,7 +101,18 @@ function Index() {
       {active ? (
         <ChatPanel conversation={active} onChange={() => setTick((t) => t + 1)} />
       ) : (
-        <main className="flex-1 flex items-center justify-center text-clay">Loading…</main>
+        <main className="flex-1 flex flex-col items-center justify-center gap-4 text-center px-6">
+          <p className="font-serif italic text-2xl md:text-3xl text-ink">No conversations yet</p>
+          <p className="text-sm text-clay max-w-sm">
+            Start a new dialogue to chat with a distilled version of Aaron.
+          </p>
+          <button
+            onClick={handleNew}
+            className="mt-2 px-5 py-2.5 rounded-2xl bg-clay text-canvas text-sm font-semibold shadow-felt hover:brightness-105 active:scale-[0.98] transition-all"
+          >
+            New dialogue
+          </button>
+        </main>
       )}
 
       <CookieConsent />
