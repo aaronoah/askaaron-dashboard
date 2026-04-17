@@ -107,6 +107,23 @@ export function ChatPanel({ conversation, onChange }: Props) {
     await runAssistant(text, userMsg.attachments);
   }
 
+  async function sendDirect(text: string) {
+    if (streaming) return;
+    const trimmed = text.trim();
+    if (!trimmed) return;
+
+    const userMsg: ChatMessage = {
+      id: crypto.randomUUID(),
+      role: "user",
+      content: trimmed,
+      createdAt: Date.now(),
+    };
+    chatStore.addMessage(conversation.id, userMsg);
+    onChange();
+
+    await runAssistant(trimmed);
+  }
+
   function retryAssistantAt(index: number) {
     if (streaming) return;
     // The user message is the one immediately preceding the failed assistant.
@@ -152,7 +169,7 @@ export function ChatPanel({ conversation, onChange }: Props) {
       <div ref={scrollRef} className="flex-1 w-full overflow-y-auto">
         <div className="w-full max-w-3xl mx-auto px-5 md:px-8 pb-56 md:pb-64 pt-4 md:pt-6 space-y-6 md:space-y-10">
           {isEmpty ? (
-            <EmptyState onPick={(p) => setDraft(p)} />
+            <EmptyState onPick={(p) => void sendDirect(p)} />
           ) : (
             conversation.messages.map((m, i) => (
               <MessageBubble
