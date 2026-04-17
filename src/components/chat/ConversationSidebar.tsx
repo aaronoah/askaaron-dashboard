@@ -158,25 +158,29 @@ export function ConversationSidebar({ conversations, activeId, onSelect, onNew, 
         </ul>
       </nav>
 
-      <div className="p-5 border-t border-border-soft space-y-2">
-        <div className="relative group/share">
-          <button
-            type="button"
-            onClick={() => {
-              const url = typeof window !== "undefined" ? window.location.href : "";
-              if (typeof navigator !== "undefined" && navigator.share) {
-                navigator.share({ title: "Arlow", url }).catch(() => {});
-              } else if (typeof navigator !== "undefined" && navigator.clipboard) {
-                navigator.clipboard.writeText(url).catch(() => {});
-              }
-            }}
-            className="w-full flex items-center gap-3 px-4 py-3 rounded-2xl bg-canvas border border-border-soft shadow-felt transition-all hover:-translate-y-px hover:shadow-felt-lg"
-          >
-            <div className="size-9 rounded-xl bg-felt border border-border-soft flex items-center justify-center">
+      <div className="p-5 border-t border-border-soft">
+        <div className="flex items-center justify-center gap-3">
+          <div className="relative group/share">
+            <button
+              type="button"
+              aria-label="Share on social media"
+              onClick={() => {
+                const url = typeof window !== "undefined" ? window.location.href : "";
+                if (typeof navigator !== "undefined" && navigator.share) {
+                  navigator.share({ title: "Arlow", url }).catch(() => {});
+                } else if (typeof navigator !== "undefined" && navigator.clipboard) {
+                  navigator.clipboard.writeText(url).catch(() => {});
+                }
+              }}
+              className="size-11 rounded-2xl bg-canvas border border-border-soft shadow-felt flex items-center justify-center transition-all hover:-translate-y-px hover:shadow-felt-lg"
+            >
               <Share2 className="size-4 text-clay" />
+            </button>
+
+            {/* Tooltip */}
+            <div className="pointer-events-none absolute left-1/2 -top-9 -translate-x-1/2 px-2.5 py-1 rounded-md bg-ink text-canvas text-[11px] font-medium whitespace-nowrap opacity-0 group-hover/share:opacity-100 transition-opacity duration-150 z-10">
+              Share on social media
             </div>
-            <span className="flex-1 text-left text-sm font-medium text-ink">Share on social media</span>
-          </button>
 
           <div
             className="absolute left-1/2 bottom-full mb-3 -translate-x-1/2 opacity-0 invisible translate-y-1 group-hover/share:opacity-100 group-hover/share:visible group-hover/share:translate-y-0 transition-all duration-200 z-20"
