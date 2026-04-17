@@ -219,7 +219,7 @@ export function ChatPanel({ conversation, onChange }: Props) {
 
 function EmptyState({ onPick }: { onPick: (prompt: string) => void }) {
   const prompts = [
-    "Book an Adplist session with Aaron",
+    "Book an Adplist career coach session with Aaron",
     "Book an mock interview with Aaron",
     "Consult tech, AI or movie questions with Aaron",
     "Brainstorm names for a thoughtful note-taking app.",
