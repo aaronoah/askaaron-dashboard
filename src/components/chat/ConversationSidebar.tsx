@@ -3,6 +3,7 @@ import { Plus, Trash2, Search, Share2, HandCoins } from "lucide-react";
 import type { Conversation } from "@/lib/chat-store";
 import { formatRelative } from "@/lib/chat-store";
 import { cn } from "@/lib/utils";
+import aaronAvatar from "@/assets/aaron.jpg";
 
 type Props = {
   conversations: Conversation[];
@@ -33,13 +34,17 @@ export function ConversationSidebar({ conversations, activeId, onSelect, onNew, 
     <aside className="hidden md:flex w-80 shrink-0 flex-col border-r border-border-soft bg-felt/60 backdrop-blur-sm">
       <div className="p-7 pb-4">
         <div className="flex items-center gap-3 mb-9">
-          <div className="size-10 rounded-2xl bg-clay flex items-center justify-center text-canvas font-serif italic text-xl shadow-felt">
-            A
+          <div className="size-10 rounded-2xl overflow-hidden shadow-felt ring-1 ring-border-soft shrink-0">
+            <img
+              src={aaronAvatar}
+              alt="Aaron portrait at the Hollywood sign"
+              className="size-full object-cover"
+            />
           </div>
           <div className="flex flex-col leading-tight">
-            <span className="font-serif italic text-2xl tracking-tight text-ink">Arlow</span>
+            <span className="font-serif italic text-2xl tracking-tight text-ink">Aaron.skill</span>
             <span className="text-[10px] font-semibold tracking-[0.2em] uppercase text-clay/70">
-              Quiet Intelligence
+              Distilled Aaron at your service
             </span>
           </div>
         </div>
