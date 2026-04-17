@@ -243,7 +243,10 @@ function EmptyState({ onPick }: { onPick: (prompt: string) => void }) {
         </span>
       ),
     },
-    { text: "Date with Aaron" },
+    {
+      text: "Date with Aaron",
+      icon: <Heart className="size-5 shrink-0 text-red-500 fill-red-500" />,
+    },
   ];
   return (
     <div className="flex flex-col items-center text-center pt-8 md:pt-16">
