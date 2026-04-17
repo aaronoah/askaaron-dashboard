@@ -17,9 +17,10 @@ COPY package.json package-lock.json* bun.lockb* ./
 RUN if [ -f package-lock.json ]; then npm ci; else npm install; fi
 
 # Copy source and build the SSR bundle
+ARG VITE_BACKEND_CORS_ORIGINS
+ENV VITE_BACKEND_CORS_ORIGINS=$VITE_BACKEND_CORS_ORIGINS
+
 COPY . .
-ARG VITE_BACKEND_CORS_ORIGINS=https://admin.askaaron.ai
-ENV VITE_BACKEND_CORS_ORIGINS=${VITE_BACKEND_CORS_ORIGINS}
 
 RUN npm run build
 
