@@ -23,8 +23,8 @@ export function MessageBubble({ message }: { message: ChatMessage }) {
             </div>
           )}
         </div>
-        <div className="shrink-0 size-10 rounded-2xl overflow-hidden ring-1 ring-border-soft shadow-felt">
-          <img src={aaronAvatar} alt="You" className="size-full object-cover" />
+        <div className="shrink-0 size-10 rounded-2xl bg-clay text-canvas flex items-center justify-center font-serif italic text-lg">
+          You
         </div>
       </div>
     );
@@ -32,8 +32,8 @@ export function MessageBubble({ message }: { message: ChatMessage }) {
 
   return (
     <div className="flex gap-6">
-      <div className="shrink-0 size-10 rounded-2xl bg-felt border border-border-soft flex items-center justify-center font-serif italic text-clay text-lg">
-        A
+      <div className="shrink-0 size-10 rounded-2xl overflow-hidden ring-1 ring-border-soft shadow-felt">
+        <img src={aaronAvatar} alt="Aaron.skill" className="size-full object-cover" />
       </div>
       <div className="flex-1 min-w-0 max-w-[65ch]">
         <div className="prose prose-stone prose-lg max-w-none text-ink/90
