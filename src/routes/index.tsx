@@ -5,6 +5,7 @@ import { chatStore, type Conversation } from "@/lib/chat-store";
 import { ConversationSidebar } from "@/components/chat/ConversationSidebar";
 import { ChatPanel } from "@/components/chat/ChatPanel";
 import { CookieConsent } from "@/components/CookieConsent";
+import { useTranslation } from "@/i18n/I18nProvider";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -39,6 +40,7 @@ function Index() {
   const [activeId, setActiveId] = useState<string | null>(null);
   const [tick, setTick] = useState(0);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { t } = useTranslation();
 
   // Hydrate from localStorage on mount.
   useEffect(() => {
