@@ -3,6 +3,7 @@ import { Plus, Trash2, Search, Share2, HandCoins, X, ExternalLink } from "lucide
 import type { Conversation } from "@/lib/chat-store";
 import { formatRelative } from "@/lib/chat-store";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "@/i18n/I18nProvider";
 import aaronAvatar from "@/assets/aaron.jpg";
 
 type Props = {
@@ -18,6 +19,7 @@ type Props = {
 export function ConversationSidebar({ conversations, activeId, onSelect, onNew, onDelete, open = false, onClose }: Props) {
   const [query, setQuery] = useState("");
   const [focused, setFocused] = useState(false);
+  const { t, locale, setLocale } = useTranslation();
 
   useEffect(() => {
     // Prefetch fonts (TanStack Start handles head, but this is a no-op safety).
