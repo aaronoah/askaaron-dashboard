@@ -54,12 +54,15 @@ export async function streamFakeReply(
     await new Promise((r) => setTimeout(r, 60));
   }
 
-  if (signal?.aborted) {
-    onDone();
-    return;
+  // 2) Stream word-by-word (client-side simulation).
+  const tokens = full.split(/(\s+)/);
+  for (const token of tokens) {
+    if (signal?.aborted) {
+      onDone();
+      return;
+    }
+    await new Promise((r) => setTimeout(r, 18 + Math.random() * 32));
+    onDelta(token);
   }
-
-  // 2) Deliver the full response in one go.
-  onDelta(full);
   onDone();
 }
