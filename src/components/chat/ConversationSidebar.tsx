@@ -154,23 +154,66 @@ export function ConversationSidebar({ conversations, activeId, onSelect, onNew, 
       </nav>
 
       <div className="p-5 border-t border-border-soft space-y-2">
-        <button
-          type="button"
-          onClick={() => {
-            const url = typeof window !== "undefined" ? window.location.href : "";
-            if (typeof navigator !== "undefined" && navigator.share) {
-              navigator.share({ title: "Arlow", url }).catch(() => {});
-            } else if (typeof navigator !== "undefined" && navigator.clipboard) {
-              navigator.clipboard.writeText(url).catch(() => {});
-            }
-          }}
-          className="group w-full flex items-center gap-3 px-4 py-3 rounded-2xl bg-canvas border border-border-soft shadow-felt transition-all hover:-translate-y-px hover:shadow-felt-lg"
-        >
-          <div className="size-9 rounded-xl bg-felt border border-border-soft flex items-center justify-center">
-            <Share2 className="size-4 text-clay" />
+        <div className="relative group/share">
+          <button
+            type="button"
+            onClick={() => {
+              const url = typeof window !== "undefined" ? window.location.href : "";
+              if (typeof navigator !== "undefined" && navigator.share) {
+                navigator.share({ title: "Arlow", url }).catch(() => {});
+              } else if (typeof navigator !== "undefined" && navigator.clipboard) {
+                navigator.clipboard.writeText(url).catch(() => {});
+              }
+            }}
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-2xl bg-canvas border border-border-soft shadow-felt transition-all hover:-translate-y-px hover:shadow-felt-lg"
+          >
+            <div className="size-9 rounded-xl bg-felt border border-border-soft flex items-center justify-center">
+              <Share2 className="size-4 text-clay" />
+            </div>
+            <span className="flex-1 text-left text-sm font-medium text-ink">Share on social media</span>
+          </button>
+
+          <div
+            className="absolute left-1/2 bottom-full mb-3 -translate-x-1/2 opacity-0 invisible translate-y-1 group-hover/share:opacity-100 group-hover/share:visible group-hover/share:translate-y-0 transition-all duration-200 z-20"
+            role="menu"
+          >
+            <div className="relative bg-canvas border border-border-soft rounded-2xl shadow-felt-lg p-2 flex items-center gap-1 min-w-[180px]">
+              <a
+                href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(typeof window !== "undefined" ? window.location.href : "")}&text=${encodeURIComponent("Arlow — a quiet AI companion")}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 flex flex-col items-center gap-1 px-3 py-2 rounded-xl hover:bg-felt transition-colors"
+              >
+                <div className="size-8 rounded-lg bg-ink flex items-center justify-center">
+                  <svg viewBox="0 0 24 24" className="size-4 fill-canvas" aria-hidden="true">
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                  </svg>
+                </div>
+                <span className="text-[11px] font-medium text-ink">X</span>
+              </a>
+              <button
+                type="button"
+                onClick={() => {
+                  const url = typeof window !== "undefined" ? window.location.href : "";
+                  if (typeof navigator !== "undefined" && navigator.clipboard) {
+                    navigator.clipboard.writeText(url).catch(() => {});
+                  }
+                }}
+                className="flex-1 flex flex-col items-center gap-1 px-3 py-2 rounded-xl hover:bg-felt transition-colors"
+              >
+                <div className="size-8 rounded-lg bg-moss flex items-center justify-center">
+                  <svg viewBox="0 0 24 24" className="size-4 fill-canvas" aria-hidden="true">
+                    <path d="M8.69 4C4.66 4 1.5 6.78 1.5 10.2c0 1.94 1.04 3.66 2.68 4.82l-.67 2.02 2.36-1.18c.84.23 1.7.36 2.6.39-.07-.36-.11-.73-.11-1.11 0-3.18 3.05-5.74 6.81-5.74.25 0 .5.01.74.04C15.34 6.4 12.3 4 8.69 4zm-2.5 3.4a.85.85 0 110 1.7.85.85 0 010-1.7zm5 0a.85.85 0 110 1.7.85.85 0 010-1.7zm9.92 3.43c-3.4 0-6.16 2.32-6.16 5.18 0 1.62.89 3.06 2.27 4.03l-.57 1.7 1.99-1.04c.7.18 1.43.29 2.18.29.13 0 .26 0 .39-.01-.05-.27-.08-.55-.08-.83 0-2.55 2.45-4.62 5.47-4.62.13 0 .26 0 .39.01-.4-2.62-2.95-4.71-5.88-4.71zm-2.07 2.83a.71.71 0 110 1.42.71.71 0 010-1.42zm4.14 0a.71.71 0 110 1.42.71.71 0 010-1.42z" />
+                  </svg>
+                </div>
+                <span className="text-[11px] font-medium text-ink">WeChat</span>
+              </button>
+              <div className="absolute left-1/2 -translate-x-1/2 top-full">
+                <div className="size-3 rotate-45 bg-canvas border-r border-b border-border-soft -translate-y-1/2" />
+              </div>
+            </div>
           </div>
-          <span className="flex-1 text-left text-sm font-medium text-ink">Share on social media</span>
-        </button>
+        </div>
 
         <button
           type="button"
