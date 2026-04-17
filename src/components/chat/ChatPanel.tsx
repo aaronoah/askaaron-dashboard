@@ -238,6 +238,7 @@ export function ChatPanel({ conversation, onChange }: Props) {
                   <ArrowUp className="size-4" />
                 </button>
               )}
+              </div>
             </div>
           </div>
           <p className="text-center text-[10px] md:text-[11px] text-clay/60 mt-2 md:mt-3 uppercase tracking-widest">
