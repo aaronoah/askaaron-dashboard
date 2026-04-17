@@ -37,6 +37,7 @@ function Index() {
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [activeId, setActiveId] = useState<string | null>(null);
   const [tick, setTick] = useState(0);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   // Hydrate from localStorage on mount, ensure at least one conversation exists.
   useEffect(() => {
@@ -61,6 +62,12 @@ function Index() {
     const fresh = chatStore.create();
     setConversations(chatStore.list());
     setActiveId(fresh.id);
+    setSidebarOpen(false);
+  }
+
+  function handleSelect(id: string) {
+    setActiveId(id);
+    setSidebarOpen(false);
   }
 
   function handleDelete(id: string) {
@@ -79,10 +86,23 @@ function Index() {
       <ConversationSidebar
         conversations={conversations}
         activeId={activeId}
-        onSelect={setActiveId}
+        onSelect={handleSelect}
         onNew={handleNew}
         onDelete={handleDelete}
+        open={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
       />
+
+      {/* Mobile hamburger */}
+      <button
+        type="button"
+        onClick={() => setSidebarOpen(true)}
+        aria-label="Open sidebar"
+        className="md:hidden fixed top-4 left-4 z-20 size-10 rounded-2xl bg-canvas border border-border-soft shadow-felt flex items-center justify-center text-ink hover:bg-felt transition-colors"
+      >
+        <Menu className="size-5" />
+      </button>
+
       {active ? (
         <ChatPanel conversation={active} onChange={() => setTick((t) => t + 1)} />
       ) : (
