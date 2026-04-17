@@ -4,6 +4,7 @@ import { Menu } from "lucide-react";
 import { chatStore, type Conversation } from "@/lib/chat-store";
 import { ConversationSidebar } from "@/components/chat/ConversationSidebar";
 import { ChatPanel } from "@/components/chat/ChatPanel";
+import { CookieConsent } from "@/components/CookieConsent";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -108,6 +109,8 @@ function Index() {
       ) : (
         <main className="flex-1 flex items-center justify-center text-clay">Loading…</main>
       )}
+
+      <CookieConsent />
     </div>
   );
 }

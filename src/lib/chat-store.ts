@@ -1,5 +1,7 @@
 // Local persistence for conversations + messages. Easy to swap for a backend later.
 
+import { consent } from "./consent";
+
 export type Attachment = {
   id: string;
   name: string;
@@ -17,6 +19,8 @@ export type ChatMessage = {
   attachments?: Attachment[];
   /** Set on assistant messages when generation failed. */
   error?: string;
+  /** Anonymous user ID from consent cookie, if granted. */
+  userCookie?: string | null;
 };
 
 export type Conversation = {
@@ -25,6 +29,8 @@ export type Conversation = {
   createdAt: number;
   updatedAt: number;
   messages: ChatMessage[];
+  /** Anonymous user ID from consent cookie, if granted at creation time. */
+  userCookie?: string | null;
 };
 
 const KEY = "arlow.conversations.v1";
@@ -60,6 +66,7 @@ export const chatStore = {
       createdAt: now,
       updatedAt: now,
       messages: [],
+      userCookie: consent.getUid(),
     };
     const list = read();
     list.unshift(conv);
@@ -81,11 +88,14 @@ export const chatStore = {
     const list = read();
     const idx = list.findIndex((c) => c.id === id);
     if (idx === -1) return;
-    list[idx].messages.push(msg);
+    const stamped: ChatMessage = { ...msg, userCookie: msg.userCookie ?? consent.getUid() };
+    list[idx].messages.push(stamped);
     list[idx].updatedAt = Date.now();
-    if (list[idx].title === "New dialogue" && msg.role === "user") {
-      list[idx].title = msg.content.slice(0, 48) || "New dialogue";
+    if (list[idx].title === "New dialogue" && stamped.role === "user") {
+      list[idx].title = stamped.content.slice(0, 48) || "New dialogue";
     }
+    // Backfill conversation cookie if user has since accepted.
+    if (!list[idx].userCookie) list[idx].userCookie = consent.getUid();
     write(list);
   },
   replaceLastAssistant(id: string, content: string, error?: string) {
