@@ -6,8 +6,8 @@ import aaronAvatar from "@/assets/aaron.jpg";
 export function MessageBubble({ message }: { message: ChatMessage }) {
   if (message.role === "user") {
     return (
-      <div className="flex gap-6 justify-end">
-        <div className="max-w-[80%] flex flex-col items-end gap-3">
+      <div className="flex gap-3 md:gap-6 justify-end">
+        <div className="max-w-[80%] flex flex-col items-end gap-2 md:gap-3">
           {message.attachments && message.attachments.length > 0 && (
             <div className="flex flex-wrap gap-2 justify-end">
               {message.attachments.map((a) => (
@@ -16,14 +16,14 @@ export function MessageBubble({ message }: { message: ChatMessage }) {
             </div>
           )}
           {message.content && (
-            <div className="px-7 py-5 rounded-[28px] bg-canvas border border-border-soft shadow-felt">
-              <p className="text-[17px] leading-relaxed text-ink whitespace-pre-wrap">
+            <div className="px-4 py-3 md:px-7 md:py-5 rounded-2xl md:rounded-[28px] bg-canvas border border-border-soft shadow-felt">
+              <p className="text-sm md:text-[17px] leading-snug md:leading-relaxed text-ink whitespace-pre-wrap">
                 {message.content}
               </p>
             </div>
           )}
         </div>
-        <div className="shrink-0 size-10 rounded-2xl bg-clay text-canvas flex items-center justify-center font-serif italic text-lg">
+        <div className="shrink-0 size-8 md:size-10 rounded-xl md:rounded-2xl bg-clay text-canvas flex items-center justify-center font-serif italic text-sm md:text-lg">
           You
         </div>
       </div>
@@ -31,18 +31,18 @@ export function MessageBubble({ message }: { message: ChatMessage }) {
   }
 
   return (
-    <div className="flex gap-6">
-      <div className="shrink-0 size-10 rounded-2xl overflow-hidden ring-1 ring-border-soft shadow-felt">
+    <div className="flex gap-3 md:gap-6">
+      <div className="shrink-0 size-8 md:size-10 rounded-xl md:rounded-2xl overflow-hidden ring-1 ring-border-soft shadow-felt">
         <img src={aaronAvatar} alt="Aaron.skill" className="size-full object-cover" />
       </div>
       <div className="flex-1 min-w-0 max-w-[65ch]">
-        <div className="prose prose-stone prose-lg max-w-none text-ink/90
-          prose-p:text-[17px] prose-p:leading-relaxed prose-p:my-3
+        <div className="prose prose-stone max-w-none text-ink/90
+          prose-p:text-sm md:prose-p:text-[17px] prose-p:leading-snug md:prose-p:leading-relaxed prose-p:my-2 md:prose-p:my-3
           prose-strong:text-ink prose-strong:font-semibold
           prose-em:font-serif prose-em:text-ink
-          prose-li:text-[17px] prose-li:leading-relaxed
-          prose-ul:my-3 prose-ol:my-3
-          prose-code:bg-felt prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm prose-code:before:content-none prose-code:after:content-none">
+          prose-li:text-sm md:prose-li:text-[17px] prose-li:leading-snug md:prose-li:leading-relaxed prose-li:my-0.5
+          prose-ul:my-2 md:prose-ul:my-3 prose-ol:my-2 md:prose-ol:my-3
+          prose-code:bg-felt prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-xs md:prose-code:text-sm prose-code:before:content-none prose-code:after:content-none">
           {message.content ? (
             <ReactMarkdown>{message.content}</ReactMarkdown>
           ) : (
