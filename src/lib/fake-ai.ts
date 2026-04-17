@@ -56,7 +56,7 @@ export async function streamFakeReply(
 
   // 2) Simulate occasional failures (~15%) so the failed/retry UI is reachable.
   if (Math.random() < 0.15) {
-    onDone("The model could not finish a reply. Please try again.");
+    onDone("Failed to reply, please try again later.");
     return;
   }
 
