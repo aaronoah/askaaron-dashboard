@@ -193,18 +193,18 @@ export function ChatPanel({ conversation, onChange }: Props) {
 
       <div className="absolute bottom-0 inset-x-0 flex justify-center px-4 md:px-6 pb-5 md:pb-8 pt-10 md:pt-16 bg-gradient-to-t from-canvas via-canvas/95 to-transparent pointer-events-none">
         <div className="w-full max-w-3xl pointer-events-auto">
-          {pending.length > 0 && (
-            <div className="mb-3 flex flex-wrap gap-2">
-              {pending.map((a) => (
-                <AttachmentChip
-                  key={a.id}
-                  attachment={a}
-                  onRemove={() => setPending((p) => p.filter((x) => x.id !== a.id))}
-                />
-              ))}
-            </div>
-          )}
           <div className="relative rounded-3xl bg-canvas border border-border-soft shadow-felt-lg focus-within:border-clay/40 transition-colors">
+            {pending.length > 0 && (
+              <div className="flex flex-wrap gap-2 px-4 md:px-5 pt-4">
+                {pending.map((a) => (
+                  <AttachmentChip
+                    key={a.id}
+                    attachment={a}
+                    onRemove={() => setPending((p) => p.filter((x) => x.id !== a.id))}
+                  />
+                ))}
+              </div>
+            )}
             <textarea
               ref={textareaRef}
               value={draft}
