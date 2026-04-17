@@ -9,17 +9,17 @@ import { CookieConsent } from "@/components/CookieConsent";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Arlow — A quiet AI companion" },
+      { title: "Ask Aaron" },
       {
         name: "description",
         content:
-          "Arlow is a humanist AI chat dashboard for slower, more thoughtful conversations. Save dialogues, attach documents, and think in writing.",
+          "Chat with a distilled version of Aaron — a conversational portfolio for slower, more thoughtful exchanges.",
       },
-      { property: "og:title", content: "Arlow — A quiet AI companion" },
+      { property: "og:title", content: "Ask Aaron" },
       {
         property: "og:description",
         content:
-          "A humanist AI chat dashboard with sidebar history and document attachments. Designed for slower thinking.",
+          "Chat with a distilled version of Aaron — a conversational portfolio for slower, more thoughtful exchanges.",
       },
     ],
     links: [
