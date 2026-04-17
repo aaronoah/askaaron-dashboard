@@ -1,0 +1,46 @@
+export const en = {
+  sidebar: {
+    tagline: "Distilled Aaron At Your Service",
+    newDialogue: "New dialogue",
+    searchPlaceholder: "Search conversations…",
+    recentChats: "Recent chats",
+    searchResults: "Search results",
+    emptyConversations: "No conversations yet — begin a new dialogue.",
+    searchHint: "Type to search your past dialogues…",
+    noMatches: "No matches for “{query}”.",
+    deleteConversation: "Delete conversation",
+    closeSidebar: "Close sidebar",
+    openSidebar: "Open sidebar",
+    githubLabel: "GitHub",
+    languageLabel: "Toggle language",
+    shareLabel: "Share on social media",
+    shareMore: "More",
+    donateLabel: "Donate to Aaron",
+  },
+  chat: {
+    headerMessages: "{count} message",
+    headerMessagesPlural: "{count} messages",
+    placeholder: "Share a thought, ask a question, or attach a document...",
+    send: "Send",
+    stop: "Stop",
+    hint: "Press Enter to send · Shift + Enter for a new line",
+    emptyTitle: "Distilled Aaron at your service",
+    emptySubtitle: "Begin a dialogue, attach a document, or start with one of the prompts below.",
+    prompts: {
+      coach: "Book an Adplist career coach session with Aaron",
+      mock: "Book an mock interview with Aaron",
+      consult: "Consult tech, AI or movie questions with Aaron",
+      date: "Date with Aaron",
+    },
+  },
+  consent: {
+    label: "Cookie consent",
+    body: "This website uses cookies to ensure you get the best experience on our website. To learn more about our privacy practices review our",
+    privacyPolicy: "Privacy Policy",
+    suffix: ". Please review your choices.",
+    accept: "Accept",
+    decline: "Decline",
+  },
+};
+
+export type Translations = typeof en;
