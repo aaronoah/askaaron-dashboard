@@ -17,6 +17,14 @@ export const en = {
     shareMore: "More",
     donateLabel: "Donate to Aaron",
   },
+  time: {
+    justNow: "just now",
+    minAgo: "{n} min ago",
+    hourAgo: "{n} hour ago",
+    hoursAgo: "{n} hours ago",
+    yesterday: "Yesterday",
+    daysAgo: "{n} days ago",
+  },
   chat: {
     headerMessages: "{count} message",
     headerMessagesPlural: "{count} messages",
