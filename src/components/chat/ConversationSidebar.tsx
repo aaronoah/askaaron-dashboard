@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Plus, Trash2, Search, Share2, HandCoins, X } from "lucide-react";
+import { Plus, Trash2, Search, Share2, HandCoins, X, ExternalLink } from "lucide-react";
 import type { Conversation } from "@/lib/chat-store";
 import { formatRelative } from "@/lib/chat-store";
 import { cn } from "@/lib/utils";
@@ -227,22 +227,35 @@ export function ConversationSidebar({ conversations, activeId, onSelect, onNew, 
                   </div>
                   <span className="text-[11px] font-medium text-ink">X</span>
                 </a>
+                <a
+                  href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(typeof window !== "undefined" ? window.location.href : "")}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 flex flex-col items-center gap-1 px-3 py-2 rounded-xl hover:bg-felt transition-colors"
+                >
+                  <div className="size-8 rounded-lg bg-[#0A66C2] flex items-center justify-center">
+                    <svg viewBox="0 0 24 24" className="size-4 fill-canvas" aria-hidden="true">
+                      <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.38-1.85 3.61 0 4.28 2.38 4.28 5.47v6.27zM5.34 7.43a2.07 2.07 0 110-4.13 2.07 2.07 0 010 4.13zm1.78 13.02H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z" />
+                    </svg>
+                  </div>
+                  <span className="text-[11px] font-medium text-ink">LinkedIn</span>
+                </a>
                 <button
                   type="button"
                   onClick={() => {
                     const url = typeof window !== "undefined" ? window.location.href : "";
-                    if (typeof navigator !== "undefined" && navigator.clipboard) {
+                    if (typeof navigator !== "undefined" && navigator.share) {
+                      navigator.share({ title: "Arlow", url }).catch(() => {});
+                    } else if (typeof navigator !== "undefined" && navigator.clipboard) {
                       navigator.clipboard.writeText(url).catch(() => {});
                     }
                   }}
                   className="flex-1 flex flex-col items-center gap-1 px-3 py-2 rounded-xl hover:bg-felt transition-colors"
                 >
-                  <div className="size-8 rounded-lg bg-moss flex items-center justify-center">
-                    <svg viewBox="0 0 24 24" className="size-4 fill-canvas" aria-hidden="true">
-                      <path d="M8.69 4C4.66 4 1.5 6.78 1.5 10.2c0 1.94 1.04 3.66 2.68 4.82l-.67 2.02 2.36-1.18c.84.23 1.7.36 2.6.39-.07-.36-.11-.73-.11-1.11 0-3.18 3.05-5.74 6.81-5.74.25 0 .5.01.74.04C15.34 6.4 12.3 4 8.69 4zm-2.5 3.4a.85.85 0 110 1.7.85.85 0 010-1.7zm5 0a.85.85 0 110 1.7.85.85 0 010-1.7zm9.92 3.43c-3.4 0-6.16 2.32-6.16 5.18 0 1.62.89 3.06 2.27 4.03l-.57 1.7 1.99-1.04c.7.18 1.43.29 2.18.29.13 0 .26 0 .39-.01-.05-.27-.08-.55-.08-.83 0-2.55 2.45-4.62 5.47-4.62.13 0 .26 0 .39.01-.4-2.62-2.95-4.71-5.88-4.71zm-2.07 2.83a.71.71 0 110 1.42.71.71 0 010-1.42zm4.14 0a.71.71 0 110 1.42.71.71 0 010-1.42z" />
-                    </svg>
+                  <div className="size-8 rounded-lg bg-clay flex items-center justify-center">
+                    <ExternalLink className="size-4 text-canvas" strokeWidth={2.5} />
                   </div>
-                  <span className="text-[11px] font-medium text-ink">WeChat</span>
+                  <span className="text-[11px] font-medium text-ink">More</span>
                 </button>
                 <div className="absolute left-1/2 -translate-x-1/2 top-full">
                   <div className="size-3 rotate-45 bg-canvas border-r border-b border-border-soft -translate-y-1/2" />
