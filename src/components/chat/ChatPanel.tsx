@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { ArrowUp, Square, Briefcase, Video } from "lucide-react";
+import { ArrowUp, Square, Briefcase, Video, Monitor } from "lucide-react";
 import type { Conversation, ChatMessage, Attachment } from "@/lib/chat-store";
 import { chatStore, formatRelative } from "@/lib/chat-store";
 import { streamFakeReply } from "@/lib/fake-ai";
@@ -235,7 +235,14 @@ function EmptyState({ onPick }: { onPick: (prompt: string) => void }) {
         </span>
       ),
     },
-    { text: "Consult tech, AI or movie questions with Aaron" },
+    {
+      text: "Consult tech, AI or movie questions with Aaron",
+      icon: (
+        <span className="inline-flex size-5 shrink-0 items-center justify-center rounded-md bg-ink text-canvas">
+          <Monitor className="size-3" strokeWidth={2.5} />
+        </span>
+      ),
+    },
     { text: "Date with Aaron" },
   ];
   return (
