@@ -1,4 +1,3 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Menu } from "lucide-react";
 import { chatStore, type Conversation } from "@/lib/chat-store";
@@ -7,35 +6,7 @@ import { ChatPanel } from "@/components/chat/ChatPanel";
 import { CookieConsent } from "@/components/CookieConsent";
 import { useTranslation } from "@/i18n/I18nProvider";
 
-export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "Ask Aaron" },
-      {
-        name: "description",
-        content:
-          "Chat with a distilled version of Aaron — a conversational portfolio for slower, more thoughtful exchanges.",
-      },
-      { property: "og:title", content: "Ask Aaron" },
-      {
-        property: "og:description",
-        content:
-          "Chat with a distilled version of Aaron — a conversational portfolio for slower, more thoughtful exchanges.",
-      },
-    ],
-    links: [
-      { rel: "preconnect", href: "https://fonts.googleapis.com" },
-      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      {
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap",
-      },
-    ],
-  }),
-  component: Index,
-});
-
-function Index() {
+export function Index() {
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [activeId, setActiveId] = useState<string | null>(null);
   const [tick, setTick] = useState(0);
@@ -55,7 +26,7 @@ function Index() {
     setConversations(chatStore.list());
   }, [tick]);
 
-  const active = activeId ? conversations.find((c) => c.id === activeId) ?? null : null;
+  const active = activeId ? (conversations.find((c) => c.id === activeId) ?? null) : null;
 
   function handleNew() {
     const fresh = chatStore.create();
@@ -104,10 +75,10 @@ function Index() {
         <ChatPanel conversation={active} onChange={() => setTick((n) => n + 1)} />
       ) : (
         <main className="flex-1 flex flex-col items-center justify-center gap-4 text-center px-6">
-          <p className="font-serif italic text-2xl md:text-3xl text-ink">{t("page.noConversationsTitle")}</p>
-          <p className="text-sm text-clay max-w-sm">
-            {t("page.noConversationsSubtitle")}
+          <p className="font-serif italic text-2xl md:text-3xl text-ink">
+            {t("page.noConversationsTitle")}
           </p>
+          <p className="text-sm text-clay max-w-sm">{t("page.noConversationsSubtitle")}</p>
           <button
             onClick={handleNew}
             className="mt-2 px-5 py-2.5 rounded-2xl bg-clay text-canvas text-sm font-semibold shadow-felt hover:brightness-105 active:scale-[0.98] transition-all"
