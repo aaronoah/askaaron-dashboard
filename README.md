@@ -124,25 +124,31 @@ npx wrangler deploy
 
 See the [Lovable self-hosting guide](https://docs.lovable.dev/tips-tricks/self-hosting) for the full walkthrough, including environment variables and DNS.
 
-### Option C — Docker (deployment image)
+### Option C — Docker (deploy to Render)
 
-A `Dockerfile` is included at the repo root. It is a **deployment image**: it builds the SSR bundle and pushes it to Cloudflare's edge via `wrangler deploy`. It is meant to be run once per release (locally or from CI) — not as a long-running server.
+A `Dockerfile` is included at the repo root. It builds the SSR bundle and runs it inside a container using Cloudflare's official `workerd` runtime (the same runtime Cloudflare uses in production), bound to the port Render injects as `$PORT`.
+
+**Deploy on Render:**
+
+1. Push this repo to GitHub.
+2. In the [Render dashboard](https://dashboard.render.com/), create a new **Web Service** → **Build and deploy from a Git repository**.
+3. Choose the **Docker** runtime (Render auto-detects the `Dockerfile`).
+4. No build/start commands needed — the `Dockerfile` handles both.
+5. Click **Create Web Service**. Render builds the image, runs the container, and exposes it on a public URL.
+
+**Run locally:**
 
 ```bash
-# 1. Build the deployment image
-docker build -t aaron-skill-deploy .
+# 1. Build the image
+docker build -t aaron-skill .
 
-# 2. Run it once to deploy to Cloudflare Workers
-docker run --rm \
-  -e CLOUDFLARE_API_TOKEN=your_token \
-  -e CLOUDFLARE_ACCOUNT_ID=your_account_id \
-  aaron-skill-deploy
+# 2. Run it (app available at http://localhost:8080)
+docker run --rm -p 8080:8080 aaron-skill
 ```
 
 **Notes:**
-- The `CLOUDFLARE_API_TOKEN` needs the **Edit Cloudflare Workers** permission. Create one at [dash.cloudflare.com → My Profile → API Tokens](https://dash.cloudflare.com/profile/api-tokens).
-- This image is ideal for CI/CD pipelines (GitHub Actions, GitLab CI, etc.) where you want a hermetic, reproducible deployment environment.
-- For local development, use `npm run dev` instead — the container is not designed to serve traffic.
+- Render injects `$PORT` automatically; the container respects it and falls back to `8080` for local runs.
+- To inject env vars (e.g. API keys), use Render's **Environment** tab, or pass `-e KEY=value` to `docker run` locally.
 
 ---
 
