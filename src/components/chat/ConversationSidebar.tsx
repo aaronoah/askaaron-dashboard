@@ -3,6 +3,7 @@ import { Plus, Trash2, Search, Share2, HandCoins, X, ExternalLink } from "lucide
 import type { Conversation } from "@/lib/chat-store";
 import { formatRelative } from "@/lib/chat-store";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "@/i18n/I18nProvider";
 import aaronAvatar from "@/assets/aaron.jpg";
 
 type Props = {
@@ -18,6 +19,7 @@ type Props = {
 export function ConversationSidebar({ conversations, activeId, onSelect, onNew, onDelete, open = false, onClose }: Props) {
   const [query, setQuery] = useState("");
   const [focused, setFocused] = useState(false);
+  const { t, locale, setLocale } = useTranslation();
 
   useEffect(() => {
     // Prefetch fonts (TanStack Start handles head, but this is a no-op safety).
@@ -81,22 +83,23 @@ export function ConversationSidebar({ conversations, activeId, onSelect, onNew, 
               </a>
               <button
                 type="button"
-                aria-label="Toggle language"
-                className="ml-auto text-[11px] font-semibold tracking-wider text-clay/60 hover:text-ink transition-colors"
+                onClick={() => setLocale(locale === "en" ? "cn" : "en")}
+                aria-label={t("sidebar.languageLabel")}
+                className="ml-auto text-[11px] font-semibold tracking-wider text-clay/60 transition-colors"
               >
-                <span className="hover:text-ink">CN</span>
+                <span className={cn("transition-colors", locale === "cn" ? "text-ink" : "hover:text-ink")}>CN</span>
                 <span className="mx-1 text-clay/40">/</span>
-                <span className="text-ink">EN</span>
+                <span className={cn("transition-colors", locale === "en" ? "text-ink" : "hover:text-ink")}>EN</span>
               </button>
             </div>
             <span className="text-[10px] font-semibold tracking-[0.2em] text-clay/70">
-              Distilled Aaron At Your Service
+              {t("sidebar.tagline")}
             </span>
           </div>
           <button
             type="button"
             onClick={onClose}
-            aria-label="Close sidebar"
+            aria-label={t("sidebar.closeSidebar")}
             className="md:hidden size-9 rounded-xl border border-border-soft bg-canvas flex items-center justify-center text-clay hover:bg-felt transition-colors"
           >
             <X className="size-4" />
@@ -107,7 +110,7 @@ export function ConversationSidebar({ conversations, activeId, onSelect, onNew, 
           onClick={onNew}
           className="group w-full flex items-center justify-between px-5 py-3.5 rounded-2xl bg-canvas border border-border-soft shadow-felt transition-all hover:-translate-y-px hover:shadow-felt-lg"
         >
-          <span className="text-sm font-medium text-ink">New dialogue</span>
+          <span className="text-sm font-medium text-ink">{t("sidebar.newDialogue")}</span>
           <Plus className="size-4 text-clay transition-transform group-hover:rotate-90" />
         </button>
 
@@ -126,7 +129,7 @@ export function ConversationSidebar({ conversations, activeId, onSelect, onNew, 
             onChange={(e) => setQuery(e.target.value)}
             onFocus={() => setFocused(true)}
             onBlur={() => setFocused(false)}
-            placeholder="Search conversations…"
+            placeholder={t("sidebar.searchPlaceholder")}
             className="flex-1 bg-transparent text-sm text-ink placeholder:text-clay/50 focus:outline-none"
           />
         </div>
@@ -134,24 +137,24 @@ export function ConversationSidebar({ conversations, activeId, onSelect, onNew, 
 
       <nav className="flex-1 overflow-y-auto px-3 py-2">
         <h3 className="px-3 text-[11px] font-bold uppercase tracking-[0.18em] text-clay/60 mb-2">
-          {trimmed.length > 0 ? "Search results" : "Recent chats"}
+          {trimmed.length > 0 ? t("sidebar.searchResults") : t("sidebar.recentChats")}
         </h3>
 
         {!isSearching && conversations.length === 0 && (
           <div className="px-4 py-6 text-sm text-clay/70 italic font-serif">
-            No conversations yet — begin a new dialogue.
+            {t("sidebar.emptyConversations")}
           </div>
         )}
 
         {isSearching && trimmed.length === 0 && (
           <div className="px-4 py-6 text-sm text-clay/70 italic font-serif">
-            Type to search your past dialogues…
+            {t("sidebar.searchHint")}
           </div>
         )}
 
         {isSearching && trimmed.length > 0 && filtered.length === 0 && (
           <div className="px-4 py-6 text-sm text-clay/70 italic font-serif">
-            No matches for “{query}”.
+            {t("sidebar.noMatches", { query })}
           </div>
         )}
 

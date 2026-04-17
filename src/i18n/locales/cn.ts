@@ -1,0 +1,46 @@
+import type { Translations } from "./en";
+
+export const cn: Translations = {
+  sidebar: {
+    tagline: "提炼版 Aaron 为您服务",
+    newDialogue: "新对话",
+    searchPlaceholder: "搜索对话…",
+    recentChats: "最近对话",
+    searchResults: "搜索结果",
+    emptyConversations: "还没有对话 —— 开始新的对话吧。",
+    searchHint: "输入关键词搜索过往对话…",
+    noMatches: "没有匹配“{query}”的结果。",
+    deleteConversation: "删除对话",
+    closeSidebar: "关闭侧边栏",
+    openSidebar: "打开侧边栏",
+    githubLabel: "GitHub",
+    languageLabel: "切换语言",
+    shareLabel: "分享到社交媒体",
+    shareMore: "更多",
+    donateLabel: "支持 Aaron",
+  },
+  chat: {
+    headerMessages: "{count} 条消息",
+    headerMessagesPlural: "{count} 条消息",
+    placeholder: "分享一个想法,提一个问题,或附上一份文档...",
+    send: "发送",
+    stop: "停止",
+    hint: "回车发送 · Shift + 回车换行",
+    emptyTitle: "提炼版 Aaron 为您服务",
+    emptySubtitle: "开始对话、附上文档,或从下方提示中选择一个开始。",
+    prompts: {
+      coach: "预约 Aaron 的 Adplist 职业咨询",
+      mock: "预约 Aaron 的模拟面试",
+      consult: "向 Aaron 咨询科技、AI 或电影话题",
+      date: "和 Aaron 约会",
+    },
+  },
+  consent: {
+    label: "Cookie 同意",
+    body: "本网站使用 Cookie 以确保您获得最佳的浏览体验。如需了解我们的隐私实践,请查看我们的",
+    privacyPolicy: "隐私政策",
+    suffix: "。请确认您的选择。",
+    accept: "接受",
+    decline: "拒绝",
+  },
+};
