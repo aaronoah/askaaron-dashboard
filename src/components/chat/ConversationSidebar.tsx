@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Plus, Trash2, Search, Share2, HandCoins } from "lucide-react";
+import { Plus, Trash2, Search, Share2, HandCoins, X } from "lucide-react";
 import type { Conversation } from "@/lib/chat-store";
 import { formatRelative } from "@/lib/chat-store";
 import { cn } from "@/lib/utils";
@@ -11,9 +11,11 @@ type Props = {
   onSelect: (id: string) => void;
   onNew: () => void;
   onDelete: (id: string) => void;
+  open?: boolean;
+  onClose?: () => void;
 };
 
-export function ConversationSidebar({ conversations, activeId, onSelect, onNew, onDelete }: Props) {
+export function ConversationSidebar({ conversations, activeId, onSelect, onNew, onDelete, open = false, onClose }: Props) {
   const [query, setQuery] = useState("");
   const [focused, setFocused] = useState(false);
 
@@ -31,7 +33,24 @@ export function ConversationSidebar({ conversations, activeId, onSelect, onNew, 
       });
 
   return (
-    <aside className="hidden md:flex w-80 shrink-0 flex-col border-r border-border-soft bg-felt/60 backdrop-blur-sm">
+    <>
+      {/* Mobile backdrop */}
+      <div
+        onClick={onClose}
+        className={cn(
+          "md:hidden fixed inset-0 z-30 bg-ink/40 backdrop-blur-sm transition-opacity duration-200",
+          open ? "opacity-100" : "opacity-0 pointer-events-none",
+        )}
+        aria-hidden={!open}
+      />
+      <aside
+        className={cn(
+          "flex w-80 shrink-0 flex-col border-r border-border-soft bg-felt/95 md:bg-felt/60 backdrop-blur-sm",
+          // mobile: slide-in drawer
+          "fixed inset-y-0 left-0 z-40 transition-transform duration-300 md:static md:translate-x-0 md:transition-none",
+          open ? "translate-x-0 shadow-felt-lg" : "-translate-x-full",
+        )}
+      >
       <div className="px-5 pt-5 pb-3">
         <div className="flex items-center gap-3 mb-5">
           <div className="size-10 rounded-2xl overflow-hidden shadow-felt ring-1 ring-border-soft shrink-0">
@@ -41,12 +60,20 @@ export function ConversationSidebar({ conversations, activeId, onSelect, onNew, 
               className="size-full object-cover"
             />
           </div>
-          <div className="flex flex-col leading-tight">
+          <div className="flex flex-col leading-tight flex-1 min-w-0">
             <span className="font-serif italic text-2xl tracking-tight text-ink">Aaron.skill</span>
             <span className="text-[10px] font-semibold tracking-[0.2em] uppercase text-clay/70">
               Distilled Aaron at your service
             </span>
           </div>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Close sidebar"
+            className="md:hidden size-9 rounded-xl border border-border-soft bg-canvas flex items-center justify-center text-clay hover:bg-felt transition-colors"
+          >
+            <X className="size-4" />
+          </button>
         </div>
 
         <button
@@ -282,6 +309,7 @@ export function ConversationSidebar({ conversations, activeId, onSelect, onNew, 
           </div>
         </div>
       </div>
-    </aside>
+      </aside>
+    </>
   );
 }

@@ -110,7 +110,7 @@ export function ChatPanel({ conversation, onChange }: Props) {
 
   return (
     <main className="flex-1 flex flex-col items-center overflow-hidden relative bg-canvas">
-      <header className="w-full max-w-3xl px-8 h-20 flex items-center justify-between shrink-0">
+      <header className="w-full max-w-3xl pl-20 pr-8 md:px-8 h-20 flex items-center justify-between shrink-0">
         <div className="flex flex-col">
           <h2 className="font-serif italic text-2xl text-ink leading-tight">
             {conversation.title}
