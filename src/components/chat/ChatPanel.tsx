@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from "react";
-import { ArrowUp, Square, Briefcase, Video, Monitor, Heart } from "lucide-react";
+import { ArrowUp, Square, Briefcase, Video, Heart } from "lucide-react";
 import type { Conversation, ChatMessage, Attachment } from "@/lib/chat-store";
 import { chatStore, formatRelative } from "@/lib/chat-store";
 import { streamFakeReply } from "@/lib/fake-ai";
 import { MessageBubble } from "./MessageBubble";
 import { AttachButton, AttachmentChip } from "./Attachment";
 import aaronAvatar from "@/assets/aaron.jpg";
+import laptopIcon from "@/assets/laptop-icon.png";
 
 type Props = {
   conversation: Conversation;
@@ -238,9 +239,14 @@ function EmptyState({ onPick }: { onPick: (prompt: string) => void }) {
     {
       text: "Consult tech, AI or movie questions with Aaron",
       icon: (
-        <span className="inline-flex size-5 shrink-0 items-center justify-center rounded-md bg-ink text-canvas">
-          <Monitor className="size-3" strokeWidth={2.5} />
-        </span>
+        <img
+          src={laptopIcon}
+          alt=""
+          width={20}
+          height={20}
+          loading="lazy"
+          className="size-5 shrink-0 object-contain"
+        />
       ),
     },
     {
