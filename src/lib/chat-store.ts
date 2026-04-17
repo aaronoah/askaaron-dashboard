@@ -113,14 +113,35 @@ export const chatStore = {
   },
 };
 
-export function formatRelative(ts: number): string {
+type RelativeStrings = {
+  justNow: string;
+  minAgo: (n: number) => string;
+  hourAgo: (n: number) => string;
+  yesterday: string;
+  daysAgo: (n: number) => string;
+  shortDate: (ts: number) => string;
+};
+
+const defaultStrings: RelativeStrings = {
+  justNow: "just now",
+  minAgo: (n) => `${n} min ago`,
+  hourAgo: (n) => `${n} hour${n > 1 ? "s" : ""} ago`,
+  yesterday: "Yesterday",
+  daysAgo: (n) => `${n} days ago`,
+  shortDate: (ts) => new Date(ts).toLocaleDateString(undefined, { month: "short", day: "numeric" }),
+};
+
+export function formatRelative(ts: number, s: RelativeStrings = defaultStrings): string {
   const diff = Date.now() - ts;
   const min = Math.floor(diff / 60000);
-  if (min < 1) return "just now";
-  if (min < 60) return `${min} min ago`;
+  if (min < 1) return s.justNow;
+  if (min < 60) return s.minAgo(min);
   const hr = Math.floor(min / 60);
-  if (hr < 24) return `${hr} hour${hr > 1 ? "s" : ""} ago`;
+  if (hr < 24) return s.hourAgo(hr);
   const d = Math.floor(hr / 24);
-  if (d < 7) return d === 1 ? "Yesterday" : `${d} days ago`;
-  return new Date(ts).toLocaleDateString(undefined, { month: "short", day: "numeric" });
+  if (d < 7) return d === 1 ? s.yesterday : s.daysAgo(d);
+  return s.shortDate(ts);
 }
+
+export const NEW_DIALOGUE_TITLE = "New dialogue";
+
