@@ -44,11 +44,13 @@ export function ChatPanel({ conversation, onChange }: Props) {
   function handlePick(files: FileList) {
     const additions: Attachment[] = [];
     for (const f of Array.from(files)) {
+      const isImage = f.type.startsWith("image/");
       additions.push({
         id: crypto.randomUUID(),
         name: f.name,
         size: f.size,
         type: f.type || "application/octet-stream",
+        previewUrl: isImage ? URL.createObjectURL(f) : undefined,
       });
     }
     setPending((p) => [...p, ...additions]);

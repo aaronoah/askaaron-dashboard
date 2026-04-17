@@ -9,6 +9,8 @@ export type Attachment = {
   type: string;
   // Small text/preview only — we don't persist binary file bytes here.
   textPreview?: string;
+  /** In-memory object URL for image previews. Not persisted across reloads. */
+  previewUrl?: string;
 };
 
 export type ChatMessage = {

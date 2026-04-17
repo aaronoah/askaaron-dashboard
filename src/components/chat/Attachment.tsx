@@ -14,22 +14,34 @@ export function AttachmentChip({
   attachment: Attachment;
   onRemove?: () => void;
 }) {
+  const isImage = attachment.type.startsWith("image/") && attachment.previewUrl;
+
   return (
-    <div className="inline-flex items-center gap-2 max-w-xs px-3 py-2 rounded-xl bg-felt border border-border-soft text-ink">
-      <div className="size-7 rounded-lg bg-canvas border border-border-soft flex items-center justify-center shrink-0">
-        <FileText className="size-3.5 text-clay" />
-      </div>
-      <div className="flex-1 min-w-0">
-        <p className="text-xs font-semibold truncate">{attachment.name}</p>
-        <p className="text-[10px] text-clay uppercase tracking-wider">{bytes(attachment.size)}</p>
-      </div>
+    <div
+      className="relative group size-16 md:size-20 rounded-xl overflow-hidden bg-felt border border-border-soft shrink-0"
+      title={`${attachment.name} · ${bytes(attachment.size)}`}
+    >
+      {isImage ? (
+        <img
+          src={attachment.previewUrl}
+          alt={attachment.name}
+          className="size-full object-cover"
+        />
+      ) : (
+        <div className="size-full flex flex-col items-center justify-center gap-1 px-1.5 text-center">
+          <FileText className="size-5 text-clay shrink-0" />
+          <p className="text-[9px] leading-tight text-ink/80 font-medium truncate w-full">
+            {attachment.name}
+          </p>
+        </div>
+      )}
       {onRemove && (
         <button
           onClick={onRemove}
-          className="p-1 rounded-md hover:bg-canvas transition-colors"
+          className="absolute top-1 right-1 size-5 rounded-full bg-ink/80 text-canvas flex items-center justify-center shadow-sm opacity-90 hover:opacity-100 hover:bg-ink transition-opacity"
           aria-label={`Remove ${attachment.name}`}
         >
-          <X className="size-3.5 text-clay" />
+          <X className="size-3" strokeWidth={2.5} />
         </button>
       )}
     </div>
