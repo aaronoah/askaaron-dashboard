@@ -124,9 +124,21 @@ npx wrangler deploy
 
 See the [Lovable self-hosting guide](https://docs.lovable.dev/tips-tricks/self-hosting) for the full walkthrough, including environment variables and DNS.
 
-### Option C — Other hosts
+### Option C — Docker
 
-Because the build targets the Workers runtime, hosts that support Cloudflare Workers / edge runtimes work out of the box. For Node-based hosts you would need to swap the Vite Cloudflare plugin for a Node SSR adapter.
+A `Dockerfile` is included at the repo root. It builds the SSR bundle and runs it inside a container using Wrangler's local Workers runtime — handy for self-hosted boxes, internal staging, or platforms like Fly.io / Railway / Render that accept a container image.
+
+```bash
+# 1. Build the image
+docker build -t aaron-skill .
+
+# 2. Run it (app will be available at http://localhost:8080)
+docker run --rm -p 8080:8080 aaron-skill
+```
+
+**Notes:**
+- The container runs `wrangler dev --local`, which serves the built worker via the official `workerd` runtime. This is suitable for self-hosting; for production on Cloudflare's edge, prefer **Option B** (`npx wrangler deploy`).
+- To inject environment variables, pass them with `-e KEY=value` or use a `--env-file`.
 
 ---
 
