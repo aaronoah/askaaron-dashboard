@@ -107,7 +107,7 @@ export function ConversationSidebar({ conversations, activeId, onSelect, onNew, 
 
       <nav className="flex-1 overflow-y-auto px-3 py-2">
         <h3 className="px-3 text-[11px] font-bold uppercase tracking-[0.18em] text-clay/60 mb-2">
-          {trimmed.length > 0 ? "Search results" : "Recent thoughts"}
+          {trimmed.length > 0 ? "Search results" : "Recent chats"}
         </h3>
 
         {!isSearching && conversations.length === 0 && (
