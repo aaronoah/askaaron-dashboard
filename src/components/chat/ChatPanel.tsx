@@ -5,6 +5,7 @@ import { chatStore, formatRelative } from "@/lib/chat-store";
 import { streamFakeReply } from "@/lib/fake-ai";
 import { MessageBubble } from "./MessageBubble";
 import { AttachButton, AttachmentChip } from "./Attachment";
+import aaronAvatar from "@/assets/aaron.jpg";
 
 type Props = {
   conversation: Conversation;
@@ -225,10 +226,10 @@ function EmptyState({ onPick }: { onPick: (prompt: string) => void }) {
   ];
   return (
     <div className="flex flex-col items-center text-center pt-8 md:pt-16">
-      <div className="size-12 md:size-16 rounded-3xl bg-felt border border-border-soft flex items-center justify-center font-serif italic text-2xl md:text-3xl text-clay shadow-felt mb-4 md:mb-6">
-        A
+      <div className="size-12 md:size-16 rounded-3xl overflow-hidden ring-1 ring-border-soft shadow-felt mb-4 md:mb-6">
+        <img src={aaronAvatar} alt="Aaron" className="size-full object-cover" />
       </div>
-      <h1 className="font-serif italic text-2xl md:text-4xl text-ink mb-2 md:mb-3 leading-tight">A space for slower thinking.</h1>
+      <h1 className="font-serif italic text-2xl md:text-4xl text-ink mb-2 md:mb-3 leading-tight">Distilled Aaron at your service</h1>
       <p className="text-clay text-sm md:text-lg max-w-md mb-6 md:mb-10 leading-snug md:leading-relaxed">
         Begin a dialogue, attach a document, or start with one of the prompts below.
       </p>
