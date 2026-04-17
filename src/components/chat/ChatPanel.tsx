@@ -219,8 +219,8 @@ export function ChatPanel({ conversation, onChange }: Props) {
 
 function EmptyState({ onPick }: { onPick: (prompt: string) => void }) {
   const prompts = [
-    "Help me design a quiet morning ritual.",
-    "What does it mean to make a humanist interface?",
+    "Book an Adplist session with Aaron",
+    "Book an mock interview with Aaron",
     "Summarize the key idea in this attached document.",
     "Brainstorm names for a thoughtful note-taking app.",
   ];
