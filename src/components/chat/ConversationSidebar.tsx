@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import { Plus, MessageCircle, Trash2 } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Plus, MessageCircle, Trash2, Search } from "lucide-react";
 import type { Conversation } from "@/lib/chat-store";
 import { formatRelative } from "@/lib/chat-store";
 import { cn } from "@/lib/utils";
@@ -13,9 +13,21 @@ type Props = {
 };
 
 export function ConversationSidebar({ conversations, activeId, onSelect, onNew, onDelete }: Props) {
+  const [query, setQuery] = useState("");
+  const [focused, setFocused] = useState(false);
+
   useEffect(() => {
     // Prefetch fonts (TanStack Start handles head, but this is a no-op safety).
   }, []);
+
+  const trimmed = query.trim().toLowerCase();
+  const isSearching = focused || trimmed.length > 0;
+  const filtered = trimmed.length === 0
+    ? conversations
+    : conversations.filter((c) => {
+        if (c.title.toLowerCase().includes(trimmed)) return true;
+        return c.messages.some((m) => m.content.toLowerCase().includes(trimmed));
+      });
 
   return (
     <aside className="hidden md:flex w-80 shrink-0 flex-col border-r border-border-soft bg-felt/60 backdrop-blur-sm">
@@ -39,21 +51,53 @@ export function ConversationSidebar({ conversations, activeId, onSelect, onNew, 
           <span className="text-sm font-medium text-ink">New dialogue</span>
           <Plus className="size-4 text-clay transition-transform group-hover:rotate-90" />
         </button>
+
+        <div
+          className={cn(
+            "mt-3 flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-canvas/70 border transition-all",
+            focused
+              ? "border-clay/60 shadow-felt ring-2 ring-clay/20"
+              : "border-border-soft hover:border-border-soft/80",
+          )}
+        >
+          <Search className={cn("size-4 shrink-0 transition-colors", focused ? "text-clay" : "text-clay/60")} />
+          <input
+            type="text"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            onFocus={() => setFocused(true)}
+            onBlur={() => setFocused(false)}
+            placeholder="Search conversations…"
+            className="flex-1 bg-transparent text-sm text-ink placeholder:text-clay/50 focus:outline-none"
+          />
+        </div>
       </div>
 
       <nav className="flex-1 overflow-y-auto px-4 py-4">
         <h3 className="px-4 text-[11px] font-bold uppercase tracking-[0.18em] text-clay/60 mb-4">
-          Recent thoughts
+          {trimmed.length > 0 ? "Search results" : "Recent thoughts"}
         </h3>
 
-        {conversations.length === 0 && (
+        {!isSearching && conversations.length === 0 && (
           <div className="px-4 py-6 text-sm text-clay/70 italic font-serif">
             No conversations yet — begin a new dialogue.
           </div>
         )}
 
+        {isSearching && trimmed.length === 0 && (
+          <div className="px-4 py-6 text-sm text-clay/70 italic font-serif">
+            Type to search your past dialogues…
+          </div>
+        )}
+
+        {isSearching && trimmed.length > 0 && filtered.length === 0 && (
+          <div className="px-4 py-6 text-sm text-clay/70 italic font-serif">
+            No matches for “{query}”.
+          </div>
+        )}
+
         <ul className="space-y-1">
-          {conversations.map((c) => {
+          {(isSearching && trimmed.length === 0 ? [] : filtered).map((c) => {
             const active = c.id === activeId;
             return (
               <li key={c.id}>
