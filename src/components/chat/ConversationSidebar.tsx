@@ -63,7 +63,7 @@ export function ConversationSidebar({ conversations, activeId, onSelect, onNew, 
           <div className="flex flex-col leading-tight flex-1 min-w-0">
             <span className="font-serif italic text-2xl tracking-tight text-ink">Aaron.skill</span>
             <span className="text-[10px] font-semibold tracking-[0.2em] uppercase text-clay/70">
-              Distilled Aaron at your service
+              Distilled Aaron At Your Service
             </span>
           </div>
           <button
