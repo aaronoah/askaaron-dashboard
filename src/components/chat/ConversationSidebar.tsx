@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Plus, MessageCircle, Trash2, Search } from "lucide-react";
+import { Plus, Trash2, Search, Share2, HandCoins } from "lucide-react";
 import type { Conversation } from "@/lib/chat-store";
 import { formatRelative } from "@/lib/chat-store";
 import { cn } from "@/lib/utils";
@@ -153,18 +153,39 @@ export function ConversationSidebar({ conversations, activeId, onSelect, onNew, 
         </ul>
       </nav>
 
-      <div className="p-6 border-t border-border-soft">
-        <div className="flex items-center gap-3 px-2">
+      <div className="p-5 border-t border-border-soft space-y-2">
+        <button
+          type="button"
+          onClick={() => {
+            const url = typeof window !== "undefined" ? window.location.href : "";
+            if (typeof navigator !== "undefined" && navigator.share) {
+              navigator.share({ title: "Arlow", url }).catch(() => {});
+            } else if (typeof navigator !== "undefined" && navigator.clipboard) {
+              navigator.clipboard.writeText(url).catch(() => {});
+            }
+          }}
+          className="group w-full flex items-center gap-3 px-4 py-3 rounded-2xl bg-canvas border border-border-soft shadow-felt transition-all hover:-translate-y-px hover:shadow-felt-lg"
+        >
           <div className="size-9 rounded-xl bg-felt border border-border-soft flex items-center justify-center">
-            <MessageCircle className="size-4 text-clay" />
+            <Share2 className="size-4 text-clay" />
           </div>
-          <div className="flex-1 min-w-0">
-            <p className="text-sm font-semibold text-ink">Studio space</p>
-            <p className="text-[11px] font-medium text-clay/70 uppercase tracking-wider">
-              Local sessions
-            </p>
+          <span className="flex-1 text-left text-sm font-medium text-ink">Share on social media</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => {
+            if (typeof window !== "undefined") {
+              window.open("https://www.paypal.me/aaron", "_blank", "noopener,noreferrer");
+            }
+          }}
+          className="group w-full flex items-center gap-3 px-4 py-3 rounded-2xl bg-canvas border border-border-soft shadow-felt transition-all hover:-translate-y-px hover:shadow-felt-lg"
+        >
+          <div className="size-9 rounded-xl bg-moss/15 border border-moss/30 flex items-center justify-center">
+            <HandCoins className="size-4 text-moss" />
           </div>
-        </div>
+          <span className="flex-1 text-left text-sm font-medium text-ink">Donate to Aaron</span>
+        </button>
       </div>
     </aside>
   );
