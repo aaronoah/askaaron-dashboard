@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { ArrowUp, Square, Video, Heart } from "lucide-react";
 import type { Conversation, ChatMessage, Attachment } from "@/lib/chat-store";
 import { chatStore, formatRelative, NEW_DIALOGUE_TITLE } from "@/lib/chat-store";
-import { streamFakeReply } from "@/lib/fake-ai";
+import { streamAssistantReply } from "@/lib/ai-stream";
 import { useTranslation } from "@/i18n/I18nProvider";
 import { useRelativeStrings } from "@/i18n/useRelativeTime";
 import { MessageBubble } from "./MessageBubble";
@@ -69,7 +69,7 @@ export function ChatPanel({ conversation, onChange }: Props) {
     abortRef.current = controller;
 
     let acc = "";
-    await streamFakeReply(
+    await streamAssistantReply(
       prompt,
       attachments,
       (chunk) => {
