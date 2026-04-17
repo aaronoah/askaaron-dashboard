@@ -87,9 +87,9 @@ export function ConversationSidebar({ conversations, activeId, onSelect, onNew, 
                 aria-label={t("sidebar.languageLabel")}
                 className="ml-auto text-[11px] font-semibold tracking-wider text-clay/60 transition-colors"
               >
-                <span className={cn("transition-colors", locale === "cn" ? "text-ink" : "hover:text-ink")}>CN</span>
+                <span className={cn("transition-colors", locale === "cn" ? "text-ink" : "hover:text-ink")}>{locale === "cn" ? "中" : "CN"}</span>
                 <span className="mx-1 text-clay/40">/</span>
-                <span className={cn("transition-colors", locale === "en" ? "text-ink" : "hover:text-ink")}>EN</span>
+                <span className={cn("transition-colors", locale === "en" ? "text-ink" : "hover:text-ink")}>{locale === "cn" ? "英" : "EN"}</span>
               </button>
             </div>
             <span className="text-[10px] font-semibold tracking-[0.2em] text-clay/70">
