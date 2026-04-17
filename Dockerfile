@@ -40,4 +40,4 @@ EXPOSE 8080
 # `wrangler dev --local` runs the production build under workerd (the same
 # runtime Cloudflare uses in production) — it is NOT a hot-reload dev server
 # when pointed at a built bundle.
-CMD ["sh", "-c", "npx wrangler dev --ip 0.0.0.0 --port ${PORT:-8080} --local"]
+CMD ["sh", "-c", "npx wrangler dev dist/worker.js --ip 0.0.0.0 --port ${PORT:-8080} --local"]
