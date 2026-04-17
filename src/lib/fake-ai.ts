@@ -38,7 +38,7 @@ export async function streamFakeReply(
   prompt: string,
   attachments: Attachment[] | undefined,
   onDelta: (chunk: string) => void,
-  onDone: () => void,
+  onDone: (error?: string) => void,
   signal?: AbortSignal,
 ) {
   const full = craftReply(prompt, attachments);
@@ -54,7 +54,13 @@ export async function streamFakeReply(
     await new Promise((r) => setTimeout(r, 60));
   }
 
-  // 2) Stream word-by-word (client-side simulation).
+  // 2) Simulate occasional failures (~15%) so the failed/retry UI is reachable.
+  if (Math.random() < 0.15) {
+    onDone("The model could not finish a reply. Please try again.");
+    return;
+  }
+
+  // 3) Stream word-by-word (client-side simulation).
   const tokens = full.split(/(\s+)/);
   for (const token of tokens) {
     if (signal?.aborted) {
