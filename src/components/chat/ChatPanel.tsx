@@ -144,12 +144,6 @@ export function ChatPanel({ conversation, onChange }: Props) {
             {conversation.messages.length === 1 ? "" : "s"} · {formatRelative(conversation.updatedAt)}
           </p>
         </div>
-        <div className="flex items-center gap-3">
-          <span className="size-2 rounded-full bg-moss/80" aria-hidden />
-          <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-clay">
-            {streaming ? "Composing" : "Ready"}
-          </span>
-        </div>
       </header>
 
       <div ref={scrollRef} className="flex-1 w-full overflow-y-auto">
