@@ -301,6 +301,7 @@ export function ConversationSidebar({ conversations, activeId, onSelect, onNew, 
           </div>
         </div>
       </div>
-    </aside>
+      </aside>
+    </>
   );
 }
