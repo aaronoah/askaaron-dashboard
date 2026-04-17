@@ -3,7 +3,7 @@
 
 import type { Attachment } from "./chat-store";
 
-const BASE_URL = import.meta.env.VITE_BACKEND_CORS_ORIGINS as string | undefined;
+const BASE_URL = process.env.VITE_BACKEND_CORS_ORIGINS as string | undefined;
 
 export async function streamAssistantReply(
   prompt: string,
