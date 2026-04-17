@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { ArrowUp, Square } from "lucide-react";
+import { ArrowUp, Square, Briefcase } from "lucide-react";
 import type { Conversation, ChatMessage, Attachment } from "@/lib/chat-store";
 import { chatStore, formatRelative } from "@/lib/chat-store";
 import { streamFakeReply } from "@/lib/fake-ai";
@@ -218,11 +218,18 @@ export function ChatPanel({ conversation, onChange }: Props) {
 }
 
 function EmptyState({ onPick }: { onPick: (prompt: string) => void }) {
-  const prompts = [
-    "Book an Adplist career coach session with Aaron",
-    "Book an mock interview with Aaron",
-    "Consult tech, AI or movie questions with Aaron",
-    "Date with Aaron",
+  const prompts: { text: string; icon?: React.ReactNode }[] = [
+    {
+      text: "Book an Adplist career coach session with Aaron",
+      icon: (
+        <span className="inline-flex size-5 shrink-0 items-center justify-center rounded-md bg-ink text-canvas">
+          <Briefcase className="size-3" strokeWidth={2.5} />
+        </span>
+      ),
+    },
+    { text: "Book an mock interview with Aaron" },
+    { text: "Consult tech, AI or movie questions with Aaron" },
+    { text: "Date with Aaron" },
   ];
   return (
     <div className="flex flex-col items-center text-center pt-8 md:pt-16">
@@ -236,11 +243,12 @@ function EmptyState({ onPick }: { onPick: (prompt: string) => void }) {
       <div className="grid sm:grid-cols-2 gap-3 w-full max-w-xl">
         {prompts.map((p) => (
           <button
-            key={p}
-            onClick={() => onPick(p)}
-            className="text-left px-4 md:px-5 py-3 md:py-4 rounded-2xl bg-canvas border border-border-soft shadow-felt hover:-translate-y-px hover:shadow-felt-lg transition-all text-ink/80 text-xs md:text-sm leading-snug md:leading-relaxed"
+            key={p.text}
+            onClick={() => onPick(p.text)}
+            className="flex items-center gap-2 text-left px-4 md:px-5 py-3 md:py-4 rounded-2xl bg-canvas border border-border-soft shadow-felt hover:-translate-y-px hover:shadow-felt-lg transition-all text-ink/80 text-xs md:text-sm leading-snug md:leading-relaxed"
           >
-            {p}
+            {p.icon}
+            <span>{p.text}</span>
           </button>
         ))}
       </div>
