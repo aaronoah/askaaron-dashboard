@@ -10,7 +10,7 @@ to a "distilled" version of Aaron right in your browser.
 
 ## Frontend stack
 
-- **Framework**: [TanStack Start](https://tanstack.com/start) v1 on top of **Vite 7**
+- **Framework**: **Vite 7**
 - **UI**: **React 19**, **Tailwind CSS v4**, **shadcn/ui** (Radix primitives)
 - **Routing**: \`react-router-dom\` for client-side navigation
 - **Markdown**: [\`react-markdown\`](https://github.com/remarkjs/react-markdown) for rendering rich replies
@@ -51,7 +51,7 @@ const aboutMarkdownCn = `# 关于本站
 
 ## 前端技术栈
 
-- **框架**：[TanStack Start](https://tanstack.com/start) v1 + **Vite 7**
+- **框架**：**Vite 7**
 - **UI**：**React 19**、**Tailwind CSS v4**、**shadcn/ui**(基于 Radix)
 - **路由**：使用 \`react-router-dom\` 实现客户端导航
 - **Markdown**：使用 [\`react-markdown\`](https://github.com/remarkjs/react-markdown) 渲染富文本回复
