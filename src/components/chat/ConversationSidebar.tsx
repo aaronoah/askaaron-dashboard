@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { useTranslation } from "@/i18n/I18nProvider";
 import { useRelativeStrings } from "@/i18n/useRelativeTime";
 import aaronAvatar from "@/assets/aaron.jpg";
+import { SwipeableConversationItem } from "./SwipeableConversationItem";
 
 type Props = {
   conversations: Conversation[];
@@ -165,52 +166,57 @@ export function ConversationSidebar({ conversations, activeId, onSelect, onNew, 
             const active = c.id === activeId;
             return (
               <li key={c.id}>
-                <button
-                  onClick={() => onSelect(c.id)}
-                  className={cn(
-                    "group w-full text-left flex items-center gap-3 px-4 py-3 rounded-2xl transition-all border",
-                    active
-                      ? "bg-canvas border-border-soft shadow-felt"
-                      : "border-transparent hover:bg-canvas/70 hover:border-border-soft/60",
-                  )}
+                <SwipeableConversationItem
+                  onDelete={() => onDelete(c.id)}
+                  deleteLabel={t("sidebar.closeSidebar") /* fallback label */}
                 >
-                  <span
+                  <button
+                    onClick={() => onSelect(c.id)}
                     className={cn(
-                      "size-1.5 rounded-full shrink-0",
-                      active ? "bg-moss" : "bg-transparent group-hover:bg-clay/30",
+                      "group w-full text-left flex items-center gap-3 px-4 py-3 rounded-2xl transition-all border bg-felt/95 md:bg-transparent",
+                      active
+                        ? "bg-canvas border-border-soft shadow-felt"
+                        : "border-transparent hover:bg-canvas/70 hover:border-border-soft/60",
                     )}
-                  />
-                  <div className="flex-1 min-w-0">
-                    <p
+                  >
+                    <span
                       className={cn(
-                        "text-sm font-medium truncate",
-                        active ? "text-ink" : "text-ink/70 group-hover:text-ink",
+                        "size-1.5 rounded-full shrink-0",
+                        active ? "bg-moss" : "bg-transparent group-hover:bg-clay/30",
                       )}
-                    >
-                      {c.title === NEW_DIALOGUE_TITLE ? t("sidebar.newDialogue") : c.title}
-                    </p>
-                    <p className="text-[12px] text-clay/70">{formatRelative(c.updatedAt, relStrings)}</p>
-                  </div>
-                  <span
-                    role="button"
-                    tabIndex={0}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onDelete(c.id);
-                    }}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" || e.key === " ") {
-                        e.preventDefault();
+                    />
+                    <div className="flex-1 min-w-0">
+                      <p
+                        className={cn(
+                          "text-sm font-medium truncate",
+                          active ? "text-ink" : "text-ink/70 group-hover:text-ink",
+                        )}
+                      >
+                        {c.title === NEW_DIALOGUE_TITLE ? t("sidebar.newDialogue") : c.title}
+                      </p>
+                      <p className="text-[12px] text-clay/70">{formatRelative(c.updatedAt, relStrings)}</p>
+                    </div>
+                    <span
+                      role="button"
+                      tabIndex={0}
+                      onClick={(e) => {
                         e.stopPropagation();
                         onDelete(c.id);
-                      }
-                    }}
-                    className="opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded-md hover:bg-felt cursor-pointer"
-                    aria-label="Delete conversation"
-                  >
-                    <Trash2 className="size-3.5 text-clay" />
-                  </span>
-                </button>
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          onDelete(c.id);
+                        }
+                      }}
+                      className="hidden md:flex opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded-md hover:bg-felt cursor-pointer"
+                      aria-label="Delete conversation"
+                    >
+                      <Trash2 className="size-3.5 text-clay" />
+                    </span>
+                  </button>
+                </SwipeableConversationItem>
               </li>
             );
           })}
