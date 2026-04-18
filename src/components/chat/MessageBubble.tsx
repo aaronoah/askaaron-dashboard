@@ -1,6 +1,7 @@
 import ReactMarkdown from "react-markdown";
 import { AlertCircle, RefreshCw } from "lucide-react";
 import type { ChatMessage } from "@/lib/chat-store";
+import { useTranslation } from "@/i18n/I18nProvider";
 import { AttachmentChip } from "./Attachment";
 import aaronAvatar from "@/assets/aaron.jpg";
 
