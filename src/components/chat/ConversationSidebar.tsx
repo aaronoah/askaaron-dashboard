@@ -390,10 +390,12 @@ export function ConversationSidebar({ conversations, activeId, onSelect, onNew, 
               role="menu"
             >
               <div className="relative bg-canvas border border-border-soft rounded-2xl shadow-felt-lg p-2 flex items-center gap-1 min-w-[180px]">
-                <a
-                  href="https://venmo.com/aaron"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <button
+                  type="button"
+                  onClick={() => {
+                    setVenmoOpen(true);
+                    setDonateOpen(false);
+                  }}
                   className="flex-1 flex flex-col items-center gap-1 px-3 py-2 rounded-xl hover:bg-felt transition-colors"
                 >
                   <div className="size-8 rounded-lg bg-[#3D95CE] flex items-center justify-center">
@@ -402,7 +404,7 @@ export function ConversationSidebar({ conversations, activeId, onSelect, onNew, 
                     </svg>
                   </div>
                   <span className="text-[11px] font-medium text-ink">Venmo</span>
-                </a>
+                </button>
                 <a
                   href="https://www.paypal.me/aaron"
                   target="_blank"
