@@ -23,6 +23,8 @@ export type ChatMessage = {
   error?: string;
   /** Anonymous user ID from consent cookie, if granted. */
   userCookie?: string | null;
+  /** For assistant messages: total seconds the server took to fully reply. */
+  responseSeconds?: number;
 };
 
 export type Conversation = {
@@ -109,6 +111,18 @@ export const chatStore = {
     if (last && last.role === "assistant") {
       last.content = content;
       last.error = error;
+      list[idx].updatedAt = Date.now();
+      write(list);
+    }
+  },
+  setLastAssistantSeconds(id: string, seconds: number) {
+    const list = read();
+    const idx = list.findIndex((c) => c.id === id);
+    if (idx === -1) return;
+    const msgs = list[idx].messages;
+    const last = msgs[msgs.length - 1];
+    if (last && last.role === "assistant") {
+      last.responseSeconds = seconds;
       list[idx].updatedAt = Date.now();
       write(list);
     }

@@ -20,6 +20,7 @@ export function ChatPanel({ conversation, onChange }: Props) {
   const [draft, setDraft] = useState("");
   const [pending, setPending] = useState<Attachment[]>([]);
   const [streaming, setStreaming] = useState(false);
+  const [elapsed, setElapsed] = useState(0);
   const abortRef = useRef<AbortController | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -40,6 +41,15 @@ export function ChatPanel({ conversation, onChange }: Props) {
     if (!el) return;
     el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
   }, [conversation.messages.length, conversation.id]);
+
+  // Live elapsed-seconds ticker while streaming
+  useEffect(() => {
+    if (!streaming) return;
+    const id = window.setInterval(() => {
+      setElapsed((s) => s + 1);
+    }, 1000);
+    return () => window.clearInterval(id);
+  }, [streaming]);
 
   function handlePick(files: FileList) {
     const additions: Attachment[] = [];
@@ -67,6 +77,8 @@ export function ChatPanel({ conversation, onChange }: Props) {
     onChange();
 
     setStreaming(true);
+    setElapsed(0);
+    const startedAt = Date.now();
     const controller = new AbortController();
     abortRef.current = controller;
 
@@ -80,12 +92,12 @@ export function ChatPanel({ conversation, onChange }: Props) {
         onChange();
       },
       (error) => {
+        const seconds = Math.round((Date.now() - startedAt) / 1000);
         if (error) {
-          // Persist the failure on the assistant message so the bubble can show
-          // the failed state + Retry control.
           chatStore.replaceLastAssistant(conversation.id, "", error);
-          onChange();
         }
+        chatStore.setLastAssistantSeconds(conversation.id, seconds);
+        onChange();
         setStreaming(false);
         abortRef.current = null;
       },
@@ -180,13 +192,18 @@ export function ChatPanel({ conversation, onChange }: Props) {
           {isEmpty ? (
             <EmptyState onPick={(p) => void sendDirect(p)} t={t} />
           ) : (
-            conversation.messages.map((m, i) => (
-              <MessageBubble
-                key={m.id}
-                message={m}
-                onRetry={m.role === "assistant" && m.error ? () => retryAssistantAt(i) : undefined}
-              />
-            ))
+            conversation.messages.map((m, i) => {
+              const isLast = i === conversation.messages.length - 1;
+              const showLive = isLast && streaming && m.role === "assistant";
+              return (
+                <MessageBubble
+                  key={m.id}
+                  message={m}
+                  onRetry={m.role === "assistant" && m.error ? () => retryAssistantAt(i) : undefined}
+                  liveSeconds={showLive ? elapsed : undefined}
+                />
+              );
+            })
           )}
         </div>
       </div>
