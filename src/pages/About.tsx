@@ -34,15 +34,6 @@ to a "distilled" version of Aaron right in your browser.
 - **Skills as code**: each skill is just a folder in git, so they are diffable, reviewable, and reusable across agents.
 - **Planned — sandboxed executable environment**: a coding agent will run inside an isolated sandbox (filesystem, shell, network egress controls) so it can read/write files, install dependencies, and execute code as the foundation for any complex, multi-step task.
 - **Planned — MCP integration**: the agent will connect to [Model Context Protocol](https://modelcontextprotocol.io/) servers to access external tools and data (issue trackers, docs, databases, design tools, etc.) through a standard, typed interface.
-
-## How it works
-
-1. Each conversation is persisted to \`localStorage\` so your history survives a refresh.
-2. The client \`POST\`s to \`/prompt\` to register a turn and receives a \`session_id\`.
-3. The client opens an SSE connection to \`/conversation?session_id=...\` and the server streams tokens as they are generated.
-4. The FastAPI backend keeps multi-turn context per session and forwards it to the Hugging Face Inference endpoint via the OpenAI Chat Completions interface.
-5. Response timings (in seconds) are recorded per assistant reply.
-6. All assistant replies are rendered through \`ReactMarkdown\`, so links, lists, code blocks, and emphasis all just work.
 `;
 
 const aboutMarkdownCn = `# 关于本站
@@ -75,15 +66,6 @@ const aboutMarkdownCn = `# 关于本站
 - **Skill 即代码**:每个 skill 只是 Git 中的一个文件夹,因此可被 diff、评审,并在多个智能体之间复用。
 - **规划中 —— 沙箱化可执行环境**:编程智能体将运行在隔离的沙箱中(受控的文件系统、Shell、网络出口),可以读写文件、安装依赖、执行代码,作为完成任意复杂多步任务的基础。
 - **规划中 —— MCP 集成**:智能体将通过 [Model Context Protocol](https://modelcontextprotocol.io/) 连接到外部工具与数据源(任务系统、文档、数据库、设计工具等),以标准化、强类型的接口进行交互。
-
-## 工作方式
-
-1. 每个对话都会持久化到 \`localStorage\`,刷新页面也不会丢。
-2. 客户端先 \`POST\` 到 \`/prompt\` 注册一次对话回合,并获得 \`session_id\`。
-3. 客户端再通过 SSE 连接 \`/conversation?session_id=...\`,服务端会随生成实时推送 token。
-4. FastAPI 后端按 session 维护多轮上下文,并以 OpenAI Chat Completions 接口调用 Hugging Face 推理端点。
-5. 每条助手回复都会记录响应耗时(秒)。
-6. 所有助手回复都通过 \`ReactMarkdown\` 渲染,链接、列表、代码块、强调都开箱即用。
 `;
 
 export function AboutPage() {
