@@ -110,7 +110,7 @@ export function SwipeableConversationItem({ onDelete, deleteLabel = "Delete conv
           onDelete();
         }}
         className={cn(
-          "absolute inset-y-0 left-0 flex items-center justify-start pl-5 bg-red-600 text-white",
+          "absolute inset-y-0 left-0 flex items-center justify-start pl-5 bg-destructive text-destructive-foreground",
           "transition-opacity duration-150",
           offset > 4 ? "opacity-100" : "opacity-0 pointer-events-none",
         )}
