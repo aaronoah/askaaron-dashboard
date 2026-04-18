@@ -46,6 +46,9 @@ export const en = {
     noConversationsTitle: "No conversations yet",
     noConversationsSubtitle: "Start a new dialogue to chat with a distilled version of Aaron.",
   },
+  about: {
+    back: "Back to chat",
+  },
   consent: {
     label: "Cookie consent",
     body: "This website uses cookies to ensure you get the best experience on our website. To learn more about our privacy practices review our",
