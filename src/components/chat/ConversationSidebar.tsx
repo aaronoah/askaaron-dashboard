@@ -68,7 +68,7 @@ export function ConversationSidebar({ conversations, activeId, onSelect, onNew, 
             <div className="flex items-center gap-2">
               <span className="font-serif italic text-2xl tracking-tight text-ink">Aaron.skill</span>
               <a
-                href="https://github.com/"
+                href="https://github.com/aaronoah/aaron-skill"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="GitHub"
