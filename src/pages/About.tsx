@@ -28,6 +28,13 @@ to a "distilled" version of Aaron right in your browser.
 - **Inference provider**: [Hugging Face Inference Providers](https://huggingface.co/docs/inference-providers)
 - **Base model**: \`google/gemma-4-31B-it:together\`
 
+## Agentic capabilities
+
+- **Skill loading from remote git repos**: at runtime the backend can clone (or pull) a "skill" — a versioned bundle of system prompt, tools manifest, and few-shot examples — from any git repository and apply it as the active **system prompt** for the conversation. This makes personality, expertise, and guardrails hot-swappable without redeploying the server.
+- **Skills as code**: each skill is just a folder in git, so they are diffable, reviewable, and reusable across agents.
+- **Planned — sandboxed executable environment**: a coding agent will run inside an isolated sandbox (filesystem, shell, network egress controls) so it can read/write files, install dependencies, and execute code as the foundation for any complex, multi-step task.
+- **Planned — MCP integration**: the agent will connect to [Model Context Protocol](https://modelcontextprotocol.io/) servers to access external tools and data (issue trackers, docs, databases, design tools, etc.) through a standard, typed interface.
+
 ## How it works
 
 1. Each conversation is persisted to \`localStorage\` so your history survives a refresh.
@@ -63,6 +70,13 @@ const aboutMarkdownCn = `# 关于本站
 - **推理接口**：兼容 OpenAI **Chat Completions** API 风格，并在服务端管理多轮对话上下文
 - **推理服务商**：[Hugging Face Inference Providers](https://huggingface.co/docs/inference-providers)
 - **基础模型**：\`google/gemma-4-31B-it:together\`
+
+## 智能体能力
+
+- **从远程 Git 仓库加载 Skill**:后端会在运行时从任意 Git 仓库克隆(或拉取)一个 "skill" —— 一个包含系统提示、工具清单与少样本示例的版本化包 —— 并将其作为当前对话的 **system prompt** 应用。这样就可以在不重新部署服务的情况下,热切换人格、专业领域与安全边界。
+- **Skill 即代码**:每个 skill 只是 Git 中的一个文件夹,因此可被 diff、评审,并在多个智能体之间复用。
+- **规划中 —— 沙箱化可执行环境**:编程智能体将运行在隔离的沙箱中(受控的文件系统、Shell、网络出口),可以读写文件、安装依赖、执行代码,作为完成任意复杂多步任务的基础。
+- **规划中 —— MCP 集成**:智能体将通过 [Model Context Protocol](https://modelcontextprotocol.io/) 连接到外部工具与数据源(任务系统、文档、数据库、设计工具等),以标准化、强类型的接口进行交互。
 
 ## 工作方式
 
