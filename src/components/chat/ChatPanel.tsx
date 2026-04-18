@@ -102,6 +102,7 @@ export function ChatPanel({ conversation, onChange }: Props) {
         abortRef.current = null;
       },
       controller.signal,
+      conversation.id,
     );
   }
 
