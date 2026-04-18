@@ -21,11 +21,38 @@ type Props = {
 export function ConversationSidebar({ conversations, activeId, onSelect, onNew, onDelete, open = false, onClose }: Props) {
   const [query, setQuery] = useState("");
   const [focused, setFocused] = useState(false);
+  const [shareOpen, setShareOpen] = useState(false);
+  const [donateOpen, setDonateOpen] = useState(false);
+  const shareRef = useRef<HTMLDivElement | null>(null);
+  const donateRef = useRef<HTMLDivElement | null>(null);
   const { t, locale, setLocale } = useTranslation();
   const relStrings = useRelativeStrings();
 
+  // Close popovers on outside tap (mobile tap-to-toggle).
   useEffect(() => {
-    // Prefetch fonts (TanStack Start handles head, but this is a no-op safety).
+    if (!shareOpen && !donateOpen) return;
+    function handleDocPointer(e: PointerEvent) {
+      const target = e.target as Node;
+      if (shareOpen && shareRef.current && !shareRef.current.contains(target)) {
+        setShareOpen(false);
+      }
+      if (donateOpen && donateRef.current && !donateRef.current.contains(target)) {
+        setDonateOpen(false);
+      }
+    }
+    document.addEventListener("pointerdown", handleDocPointer);
+    return () => document.removeEventListener("pointerdown", handleDocPointer);
+  }, [shareOpen, donateOpen]);
+
+  // Detect coarse pointer (touch) to switch from hover to tap behavior.
+  const [isCoarse, setIsCoarse] = useState(false);
+  useEffect(() => {
+    if (typeof window === "undefined" || !window.matchMedia) return;
+    const mq = window.matchMedia("(hover: none), (pointer: coarse)");
+    const update = () => setIsCoarse(mq.matches);
+    update();
+    mq.addEventListener?.("change", update);
+    return () => mq.removeEventListener?.("change", update);
   }, []);
 
   const trimmed = query.trim().toLowerCase();
