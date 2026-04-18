@@ -43,8 +43,6 @@ to a "distilled" version of Aaron right in your browser.
 4. The FastAPI backend keeps multi-turn context per session and forwards it to the Hugging Face Inference endpoint via the OpenAI Chat Completions interface.
 5. Response timings (in seconds) are recorded per assistant reply.
 6. All assistant replies are rendered through \`ReactMarkdown\`, so links, lists, code blocks, and emphasis all just work.
-
-> Built and iterated on [Lovable](https://lovable.dev).
 `;
 
 const aboutMarkdownCn = `# 关于本站
@@ -86,8 +84,6 @@ const aboutMarkdownCn = `# 关于本站
 4. FastAPI 后端按 session 维护多轮上下文,并以 OpenAI Chat Completions 接口调用 Hugging Face 推理端点。
 5. 每条助手回复都会记录响应耗时(秒)。
 6. 所有助手回复都通过 \`ReactMarkdown\` 渲染,链接、列表、代码块、强调都开箱即用。
-
-> 在 [Lovable](https://lovable.dev) 上构建和迭代。
 `;
 
 export function AboutPage() {
