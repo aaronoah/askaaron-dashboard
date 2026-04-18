@@ -115,6 +115,18 @@ export const chatStore = {
       write(list);
     }
   },
+  setLastAssistantSeconds(id: string, seconds: number) {
+    const list = read();
+    const idx = list.findIndex((c) => c.id === id);
+    if (idx === -1) return;
+    const msgs = list[idx].messages;
+    const last = msgs[msgs.length - 1];
+    if (last && last.role === "assistant") {
+      last.responseSeconds = seconds;
+      list[idx].updatedAt = Date.now();
+      write(list);
+    }
+  },
 };
 
 type RelativeStrings = {
