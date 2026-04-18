@@ -7,9 +7,11 @@ import aaronAvatar from "@/assets/aaron.jpg";
 type Props = {
   message: ChatMessage;
   onRetry?: () => void;
+  /** When set, the assistant is actively streaming and we show a live timer. */
+  liveSeconds?: number;
 };
 
-export function MessageBubble({ message, onRetry }: Props) {
+export function MessageBubble({ message, onRetry, liveSeconds }: Props) {
   if (message.role === "user") {
     return (
       <div className="flex gap-3 md:gap-6 justify-end">
