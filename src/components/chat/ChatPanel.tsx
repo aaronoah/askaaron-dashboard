@@ -20,6 +20,7 @@ export function ChatPanel({ conversation, onChange }: Props) {
   const [draft, setDraft] = useState("");
   const [pending, setPending] = useState<Attachment[]>([]);
   const [streaming, setStreaming] = useState(false);
+  const [elapsed, setElapsed] = useState(0);
   const abortRef = useRef<AbortController | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
