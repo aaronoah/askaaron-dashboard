@@ -69,13 +69,27 @@ export function MessageBubble({ message, onRetry, liveSeconds }: Props) {
               )}
             </div>
           ) : message.content ? (
-            <ReactMarkdown>{message.content}</ReactMarkdown>
+            <>
+              <ReactMarkdown>{message.content}</ReactMarkdown>
+              {typeof message.responseSeconds === "number" && (
+                <p className="not-prose text-[11px] md:text-xs text-clay/60 mt-2">
+                  Replied in {message.responseSeconds}s
+                </p>
+              )}
+            </>
           ) : (
-            <span className="inline-flex gap-1 items-center text-clay">
-              <span className="size-1.5 rounded-full bg-clay/60 animate-pulse" />
-              <span className="size-1.5 rounded-full bg-clay/60 animate-pulse [animation-delay:150ms]" />
-              <span className="size-1.5 rounded-full bg-clay/60 animate-pulse [animation-delay:300ms]" />
-            </span>
+            <div className="flex flex-col gap-1.5">
+              <span className="inline-flex gap-1 items-center text-clay">
+                <span className="size-1.5 rounded-full bg-clay/60 animate-pulse" />
+                <span className="size-1.5 rounded-full bg-clay/60 animate-pulse [animation-delay:150ms]" />
+                <span className="size-1.5 rounded-full bg-clay/60 animate-pulse [animation-delay:300ms]" />
+              </span>
+              {typeof liveSeconds === "number" && (
+                <span className="text-[11px] md:text-xs text-clay/60 font-mono">
+                  {liveSeconds}s
+                </span>
+              )}
+            </div>
           )}
         </div>
       </div>
