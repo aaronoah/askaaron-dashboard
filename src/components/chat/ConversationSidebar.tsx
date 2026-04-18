@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { useTranslation } from "@/i18n/I18nProvider";
 import { useRelativeStrings } from "@/i18n/useRelativeTime";
 import aaronAvatar from "@/assets/aaron.jpg";
+import venmoQr from "@/assets/venmo-qr.jpg";
 import { SwipeableConversationItem } from "./SwipeableConversationItem";
 
 type Props = {
@@ -23,6 +24,7 @@ export function ConversationSidebar({ conversations, activeId, onSelect, onNew, 
   const [focused, setFocused] = useState(false);
   const [shareOpen, setShareOpen] = useState(false);
   const [donateOpen, setDonateOpen] = useState(false);
+  const [venmoOpen, setVenmoOpen] = useState(false);
   const shareRef = useRef<HTMLDivElement | null>(null);
   const donateRef = useRef<HTMLDivElement | null>(null);
   const { t, locale, setLocale } = useTranslation();
@@ -388,10 +390,12 @@ export function ConversationSidebar({ conversations, activeId, onSelect, onNew, 
               role="menu"
             >
               <div className="relative bg-canvas border border-border-soft rounded-2xl shadow-felt-lg p-2 flex items-center gap-1 min-w-[180px]">
-                <a
-                  href="https://venmo.com/aaron"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <button
+                  type="button"
+                  onClick={() => {
+                    setVenmoOpen(true);
+                    setDonateOpen(false);
+                  }}
                   className="flex-1 flex flex-col items-center gap-1 px-3 py-2 rounded-xl hover:bg-felt transition-colors"
                 >
                   <div className="size-8 rounded-lg bg-[#3D95CE] flex items-center justify-center">
@@ -400,7 +404,7 @@ export function ConversationSidebar({ conversations, activeId, onSelect, onNew, 
                     </svg>
                   </div>
                   <span className="text-[11px] font-medium text-ink">Venmo</span>
-                </a>
+                </button>
                 <a
                   href="https://www.paypal.me/aaron"
                   target="_blank"
@@ -423,6 +427,39 @@ export function ConversationSidebar({ conversations, activeId, onSelect, onNew, 
         </div>
       </div>
       </aside>
+
+      {/* Venmo QR overlay */}
+      {venmoOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-ink/60 backdrop-blur-sm p-6 animate-in fade-in duration-200"
+          onClick={() => setVenmoOpen(false)}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Venmo QR code"
+        >
+          <div
+            className="relative bg-canvas rounded-3xl shadow-felt-lg border border-border-soft p-5 max-w-sm w-full"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              type="button"
+              onClick={() => setVenmoOpen(false)}
+              aria-label="Close"
+              className="absolute top-3 right-3 size-9 rounded-xl bg-felt hover:bg-felt/70 flex items-center justify-center text-clay transition-colors"
+            >
+              <X className="size-4" />
+            </button>
+            <img
+              src={venmoQr}
+              alt="Venmo QR code to donate to Aaron"
+              className="w-full h-auto rounded-2xl"
+            />
+            <p className="mt-3 text-center text-sm text-clay font-serif italic">
+              Scan with your Venmo app
+            </p>
+          </div>
+        </div>
+      )}
     </>
   );
 }
