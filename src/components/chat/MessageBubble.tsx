@@ -75,7 +75,7 @@ export function MessageBubble({ message, onRetry, liveSeconds }: Props) {
               <ReactMarkdown>{message.content}</ReactMarkdown>
               {typeof message.responseSeconds === "number" && (
                 <p className="not-prose text-[11px] md:text-xs text-clay/60 mt-2">
-                  Replied in {message.responseSeconds}s
+                  {t("chat.repliedIn", { seconds: message.responseSeconds })}
                 </p>
               )}
             </>
