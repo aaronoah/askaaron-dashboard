@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Plus, Trash2, Search, Share2, HandCoins, X, ExternalLink } from "lucide-react";
 import type { Conversation } from "@/lib/chat-store";
 import { formatRelative, NEW_DIALOGUE_TITLE } from "@/lib/chat-store";
@@ -21,11 +21,38 @@ type Props = {
 export function ConversationSidebar({ conversations, activeId, onSelect, onNew, onDelete, open = false, onClose }: Props) {
   const [query, setQuery] = useState("");
   const [focused, setFocused] = useState(false);
+  const [shareOpen, setShareOpen] = useState(false);
+  const [donateOpen, setDonateOpen] = useState(false);
+  const shareRef = useRef<HTMLDivElement | null>(null);
+  const donateRef = useRef<HTMLDivElement | null>(null);
   const { t, locale, setLocale } = useTranslation();
   const relStrings = useRelativeStrings();
 
+  // Close popovers on outside tap (mobile tap-to-toggle).
   useEffect(() => {
-    // Prefetch fonts (TanStack Start handles head, but this is a no-op safety).
+    if (!shareOpen && !donateOpen) return;
+    function handleDocPointer(e: PointerEvent) {
+      const target = e.target as Node;
+      if (shareOpen && shareRef.current && !shareRef.current.contains(target)) {
+        setShareOpen(false);
+      }
+      if (donateOpen && donateRef.current && !donateRef.current.contains(target)) {
+        setDonateOpen(false);
+      }
+    }
+    document.addEventListener("pointerdown", handleDocPointer);
+    return () => document.removeEventListener("pointerdown", handleDocPointer);
+  }, [shareOpen, donateOpen]);
+
+  // Detect coarse pointer (touch) to switch from hover to tap behavior.
+  const [isCoarse, setIsCoarse] = useState(false);
+  useEffect(() => {
+    if (typeof window === "undefined" || !window.matchMedia) return;
+    const mq = window.matchMedia("(hover: none), (pointer: coarse)");
+    const update = () => setIsCoarse(mq.matches);
+    update();
+    mq.addEventListener?.("change", update);
+    return () => mq.removeEventListener?.("change", update);
   }, []);
 
   const trimmed = query.trim().toLowerCase();
@@ -238,11 +265,17 @@ export function ConversationSidebar({ conversations, activeId, onSelect, onNew, 
 
       <div className="px-5 py-3 border-t border-border-soft">
         <div className="flex items-center justify-center gap-3">
-          <div className="relative group/share">
+          <div ref={shareRef} className="relative group/share">
             <button
               type="button"
               aria-label="Share on social media"
+              aria-expanded={shareOpen}
               onClick={() => {
+                if (isCoarse) {
+                  setShareOpen((v) => !v);
+                  setDonateOpen(false);
+                  return;
+                }
                 const url = typeof window !== "undefined" ? window.location.href : "";
                 if (typeof navigator !== "undefined" && navigator.share) {
                   navigator.share({ title: "Arlow", url }).catch(() => {});
@@ -255,13 +288,18 @@ export function ConversationSidebar({ conversations, activeId, onSelect, onNew, 
               <Share2 className="size-4 text-clay" />
             </button>
 
-            {/* Tooltip */}
-            <div className="pointer-events-none absolute left-full top-1/2 -translate-y-1/2 ml-2 px-2.5 py-1 rounded-md bg-ink text-canvas text-[11px] font-medium whitespace-nowrap opacity-0 group-hover/share:opacity-100 transition-opacity duration-150 z-10">
+            {/* Tooltip — hover only (hidden on touch) */}
+            <div className="hidden md:block pointer-events-none absolute left-full top-1/2 -translate-y-1/2 ml-2 px-2.5 py-1 rounded-md bg-ink text-canvas text-[11px] font-medium whitespace-nowrap opacity-0 group-hover/share:opacity-100 transition-opacity duration-150 z-10">
               Share on social media
             </div>
 
             <div
-              className="absolute left-1/2 bottom-full mb-3 -translate-x-1/2 opacity-0 invisible translate-y-1 group-hover/share:opacity-100 group-hover/share:visible group-hover/share:translate-y-0 transition-all duration-200 z-20"
+              className={cn(
+                "absolute left-1/2 bottom-full mb-3 -translate-x-1/2 transition-all duration-200 z-20",
+                shareOpen
+                  ? "opacity-100 visible translate-y-0"
+                  : "opacity-0 invisible translate-y-1 md:group-hover/share:opacity-100 md:group-hover/share:visible md:group-hover/share:translate-y-0",
+              )}
               role="menu"
             >
               <div className="relative bg-canvas border border-border-soft rounded-2xl shadow-felt-lg p-2 flex items-center gap-1 min-w-[180px]">
@@ -315,11 +353,17 @@ export function ConversationSidebar({ conversations, activeId, onSelect, onNew, 
             </div>
           </div>
 
-          <div className="relative group/donate">
+          <div ref={donateRef} className="relative group/donate">
             <button
               type="button"
               aria-label="Donate to Aaron"
+              aria-expanded={donateOpen}
               onClick={() => {
+                if (isCoarse) {
+                  setDonateOpen((v) => !v);
+                  setShareOpen(false);
+                  return;
+                }
                 if (typeof window !== "undefined") {
                   window.open("https://www.paypal.me/aaron", "_blank", "noopener,noreferrer");
                 }
@@ -329,13 +373,18 @@ export function ConversationSidebar({ conversations, activeId, onSelect, onNew, 
               <HandCoins className="size-4 text-moss" />
             </button>
 
-            {/* Tooltip */}
-            <div className="pointer-events-none absolute left-full top-1/2 -translate-y-1/2 ml-2 px-2.5 py-1 rounded-md bg-ink text-canvas text-[11px] font-medium whitespace-nowrap opacity-0 group-hover/donate:opacity-100 transition-opacity duration-150 z-10">
+            {/* Tooltip — hover only (hidden on touch) */}
+            <div className="hidden md:block pointer-events-none absolute left-full top-1/2 -translate-y-1/2 ml-2 px-2.5 py-1 rounded-md bg-ink text-canvas text-[11px] font-medium whitespace-nowrap opacity-0 group-hover/donate:opacity-100 transition-opacity duration-150 z-10">
               Donate to Aaron
             </div>
 
             <div
-              className="absolute left-1/2 bottom-full mb-3 -translate-x-1/2 opacity-0 invisible translate-y-1 group-hover/donate:opacity-100 group-hover/donate:visible group-hover/donate:translate-y-0 transition-all duration-200 z-20"
+              className={cn(
+                "absolute left-1/2 bottom-full mb-3 -translate-x-1/2 transition-all duration-200 z-20",
+                donateOpen
+                  ? "opacity-100 visible translate-y-0"
+                  : "opacity-0 invisible translate-y-1 md:group-hover/donate:opacity-100 md:group-hover/donate:visible md:group-hover/donate:translate-y-0",
+              )}
               role="menu"
             >
               <div className="relative bg-canvas border border-border-soft rounded-2xl shadow-felt-lg p-2 flex items-center gap-1 min-w-[180px]">
