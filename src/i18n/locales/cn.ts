@@ -48,6 +48,9 @@ export const cn: Translations = {
     noConversationsTitle: "还没有对话",
     noConversationsSubtitle: "开启一段新的对话,与提炼版 Aaron 聊聊。",
   },
+  about: {
+    back: "返回聊天",
+  },
   consent: {
     label: "Cookie 同意",
     body: "本网站使用 Cookie 以确保您获得最佳的浏览体验。如需了解我们的隐私实践,请查看我们的",
