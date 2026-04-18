@@ -192,13 +192,18 @@ export function ChatPanel({ conversation, onChange }: Props) {
           {isEmpty ? (
             <EmptyState onPick={(p) => void sendDirect(p)} t={t} />
           ) : (
-            conversation.messages.map((m, i) => (
-              <MessageBubble
-                key={m.id}
-                message={m}
-                onRetry={m.role === "assistant" && m.error ? () => retryAssistantAt(i) : undefined}
-              />
-            ))
+            conversation.messages.map((m, i) => {
+              const isLast = i === conversation.messages.length - 1;
+              const showLive = isLast && streaming && m.role === "assistant";
+              return (
+                <MessageBubble
+                  key={m.id}
+                  message={m}
+                  onRetry={m.role === "assistant" && m.error ? () => retryAssistantAt(i) : undefined}
+                  liveSeconds={showLive ? elapsed : undefined}
+                />
+              );
+            })
           )}
         </div>
       </div>
