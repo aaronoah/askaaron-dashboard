@@ -18,6 +18,7 @@ export async function streamAssistantReply(
   onDelta: (chunk: string) => void,
   onDone: (error?: string) => void,
   signal?: AbortSignal,
+  threadId?: string,
 ) {
   if (!BASE_URL) {
     onDone("Missing VITE_BACKEND_CORS_ORIGINS env var.");
@@ -27,6 +28,7 @@ export async function streamAssistantReply(
   const user = consent.getUid();
   const payload = {
     user,
+    threadId,
     text: prompt,
     attachments: (attachments ?? []).map(fakeAttachmentUrl),
   };
