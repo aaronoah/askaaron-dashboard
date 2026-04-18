@@ -24,6 +24,7 @@ export function ConversationSidebar({ conversations, activeId, onSelect, onNew, 
   const [focused, setFocused] = useState(false);
   const [shareOpen, setShareOpen] = useState(false);
   const [donateOpen, setDonateOpen] = useState(false);
+  const [venmoOpen, setVenmoOpen] = useState(false);
   const shareRef = useRef<HTMLDivElement | null>(null);
   const donateRef = useRef<HTMLDivElement | null>(null);
   const { t, locale, setLocale } = useTranslation();
