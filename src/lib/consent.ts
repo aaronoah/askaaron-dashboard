@@ -39,40 +39,68 @@ function writeStored(token: string) {
   }
 }
 
-// Pending token generated for the current visit until the user decides.
-let pendingToken: string | null = null;
+// Cookie-banner decision is tracked separately from the user token.
+const DECISION_KEY = "cookie_consent";
 
-function getPendingToken(): string {
-  if (!pendingToken) pendingToken = generateUuid();
-  return pendingToken;
+function readDecision(): "accepted" | "declined" | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const v = window.localStorage.getItem(DECISION_KEY);
+    return v === "accepted" || v === "declined" ? v : null;
+  } catch {
+    return null;
+  }
+}
+
+function writeDecision(v: "accepted" | "declined") {
+  if (typeof window === "undefined") return;
+  try {
+    window.localStorage.setItem(DECISION_KEY, v);
+  } catch {
+    // ignore
+  }
+}
+
+/**
+ * Ensure a `user` token exists in localStorage on every visit, regardless of
+ * the cookie banner decision. Generates and persists a UUID if missing.
+ */
+function ensureUserToken(): string {
+  const existing = readStored();
+  if (existing) return existing;
+  const token = generateUuid();
+  writeStored(token);
+  return token;
+}
+
+// Run immediately on module load (every page visit) in the browser.
+if (typeof window !== "undefined") {
+  ensureUserToken();
 }
 
 export const consent = {
-  /** True when a stored session token already exists (banner should be hidden). */
+  /** True when the user has made a cookie-banner decision. */
   hasDecision(): boolean {
-    return readStored() !== null;
+    return readDecision() !== null;
   },
   isAccepted(): boolean {
-    return readStored() !== null;
+    return readDecision() === "accepted";
   },
-  /** Persist the pending session token under localStorage["user"] and return it. */
+  /** Record acceptance. The user token is already guaranteed to exist. */
   accept(): string {
-    const existing = readStored();
-    if (existing) return existing;
-    const token = getPendingToken();
-    writeStored(token);
-    return token;
+    writeDecision("accepted");
+    return ensureUserToken();
   },
-  /** No-op for storage. Banner will appear again on next visit. */
+  /** Record decline. Does not remove the user token. */
   decline() {
-    // intentionally do nothing — we only persist on accept
+    writeDecision("declined");
   },
-  /** The active session token, or null if the user hasn't accepted yet. */
+  /** The active session token (always present after first visit). */
   getUid(): string | null {
-    return readStored();
+    return ensureUserToken();
   },
-  /** The token that *would* be stored on accept (useful for debugging). */
+  /** Ensure & return the token (alias kept for compatibility). */
   peekPendingToken(): string {
-    return getPendingToken();
+    return ensureUserToken();
   },
 };
