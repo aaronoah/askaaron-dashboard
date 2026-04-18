@@ -23,6 +23,8 @@ export type ChatMessage = {
   error?: string;
   /** Anonymous user ID from consent cookie, if granted. */
   userCookie?: string | null;
+  /** For assistant messages: total seconds the server took to fully reply. */
+  responseSeconds?: number;
 };
 
 export type Conversation = {
