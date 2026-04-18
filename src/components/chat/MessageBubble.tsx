@@ -13,6 +13,7 @@ type Props = {
 };
 
 export function MessageBubble({ message, onRetry, liveSeconds }: Props) {
+  const { t } = useTranslation();
   if (message.role === "user") {
     return (
       <div className="flex gap-3 md:gap-6 justify-end">
