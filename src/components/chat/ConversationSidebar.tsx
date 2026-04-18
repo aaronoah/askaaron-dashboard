@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Plus, Trash2, Search, Share2, HandCoins, X, ExternalLink } from "lucide-react";
 import type { Conversation } from "@/lib/chat-store";
 import { formatRelative, NEW_DIALOGUE_TITLE } from "@/lib/chat-store";
