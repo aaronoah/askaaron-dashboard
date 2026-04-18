@@ -42,6 +42,15 @@ export function ChatPanel({ conversation, onChange }: Props) {
     el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
   }, [conversation.messages.length, conversation.id]);
 
+  // Live elapsed-seconds ticker while streaming
+  useEffect(() => {
+    if (!streaming) return;
+    const id = window.setInterval(() => {
+      setElapsed((s) => s + 1);
+    }, 1000);
+    return () => window.clearInterval(id);
+  }, [streaming]);
+
   function handlePick(files: FileList) {
     const additions: Attachment[] = [];
     for (const f of Array.from(files)) {
