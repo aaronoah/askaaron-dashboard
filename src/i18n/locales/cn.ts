@@ -42,6 +42,7 @@ export const cn: Translations = {
       consult: "向 Aaron 咨询科技、AI 或电影话题",
       date: "和 Aaron 约会",
     },
+    repliedIn: "用时 {seconds} 秒回复",
   },
   page: {
     noConversationsTitle: "还没有对话",

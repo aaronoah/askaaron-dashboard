@@ -1,6 +1,7 @@
 import ReactMarkdown from "react-markdown";
 import { AlertCircle, RefreshCw } from "lucide-react";
 import type { ChatMessage } from "@/lib/chat-store";
+import { useTranslation } from "@/i18n/I18nProvider";
 import { AttachmentChip } from "./Attachment";
 import aaronAvatar from "@/assets/aaron.jpg";
 
@@ -12,6 +13,7 @@ type Props = {
 };
 
 export function MessageBubble({ message, onRetry, liveSeconds }: Props) {
+  const { t } = useTranslation();
   if (message.role === "user") {
     return (
       <div className="flex gap-3 md:gap-6 justify-end">
@@ -73,7 +75,7 @@ export function MessageBubble({ message, onRetry, liveSeconds }: Props) {
               <ReactMarkdown>{message.content}</ReactMarkdown>
               {typeof message.responseSeconds === "number" && (
                 <p className="not-prose text-[11px] md:text-xs text-clay/60 mt-2">
-                  Replied in {message.responseSeconds}s
+                  {t("chat.repliedIn", { seconds: message.responseSeconds })}
                 </p>
               )}
             </>

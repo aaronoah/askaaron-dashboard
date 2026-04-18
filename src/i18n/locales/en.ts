@@ -40,6 +40,7 @@ export const en = {
       consult: "Consult tech, AI or movie questions with Aaron",
       date: "Date with Aaron",
     },
+    repliedIn: "Replied in {seconds}s",
   },
   page: {
     noConversationsTitle: "No conversations yet",
