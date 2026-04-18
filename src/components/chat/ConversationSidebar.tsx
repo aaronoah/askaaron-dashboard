@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { useTranslation } from "@/i18n/I18nProvider";
 import { useRelativeStrings } from "@/i18n/useRelativeTime";
 import aaronAvatar from "@/assets/aaron.jpg";
+import venmoQr from "@/assets/venmo-qr.jpg";
 import { SwipeableConversationItem } from "./SwipeableConversationItem";
 
 type Props = {
