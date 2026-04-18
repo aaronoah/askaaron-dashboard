@@ -8,7 +8,7 @@ const aboutMarkdownEn = `# About this site
 **Aaron.skill** is a conversational portfolio — a chat interface where you can talk
 to a "distilled" version of Aaron right in your browser.
 
-## Tech stack
+## Frontend stack
 
 - **Framework**: [TanStack Start](https://tanstack.com/start) v1 on top of **Vite 7**
 - **UI**: **React 19**, **Tailwind CSS v4**, **shadcn/ui** (Radix primitives)
@@ -19,13 +19,23 @@ to a "distilled" version of Aaron right in your browser.
 - **i18n**: Lightweight custom provider with English & 中文 dictionaries
 - **Deployment target**: Cloudflare Workers (via \`@cloudflare/vite-plugin\`)
 
+## Backend stack
+
+- **Framework**: [FastAPI](https://fastapi.tiangolo.com/) with [Pydantic](https://docs.pydantic.dev/) for request/response schemas and validation
+- **Server**: [Uvicorn](https://www.uvicorn.org/) ASGI server, containerized with **Docker**
+- **Streaming**: Tokens are streamed to the browser over **Server-Sent Events (SSE)**
+- **Inference**: OpenAI **Chat Completions** API style, with multi-turn conversation context management on the server
+- **Inference provider**: [Hugging Face Inference Providers](https://huggingface.co/docs/inference-providers)
+- **Base model**: \`google/gemma-4-31B-it:together\`
+
 ## How it works
 
 1. Each conversation is persisted to \`localStorage\` so your history survives a refresh.
-2. Messages are streamed from the \`/prompt\` endpoint via Server-Sent Events.
-3. Response timings (in seconds) are recorded per assistant reply.
-4. All assistant replies are rendered through \`ReactMarkdown\`, so links, lists,
-   code blocks, and emphasis all just work.
+2. The client \`POST\`s to \`/prompt\` to register a turn and receives a \`session_id\`.
+3. The client opens an SSE connection to \`/conversation?session_id=...\` and the server streams tokens as they are generated.
+4. The FastAPI backend keeps multi-turn context per session and forwards it to the Hugging Face Inference endpoint via the OpenAI Chat Completions interface.
+5. Response timings (in seconds) are recorded per assistant reply.
+6. All assistant replies are rendered through \`ReactMarkdown\`, so links, lists, code blocks, and emphasis all just work.
 
 > Built and iterated on [Lovable](https://lovable.dev).
 `;
@@ -34,23 +44,34 @@ const aboutMarkdownCn = `# 关于本站
 
 **Aaron.skill** 是一个对话式作品集 —— 一个可以在浏览器里直接与 Aaron 的“数字分身”聊天的界面。
 
-## 技术栈
+## 前端技术栈
 
 - **框架**：[TanStack Start](https://tanstack.com/start) v1 + **Vite 7**
 - **UI**：**React 19**、**Tailwind CSS v4**、**shadcn/ui**(基于 Radix)
 - **路由**：使用 \`react-router-dom\` 实现客户端导航
 - **Markdown**：使用 [\`react-markdown\`](https://github.com/remarkjs/react-markdown) 渲染富文本回复
-- **状态 / 数据**:TanStack Query，加上一个基于 \`localStorage\` 的轻量聊天存储
+- **状态 / 数据**：TanStack Query，加上一个基于 \`localStorage\` 的轻量聊天存储
 - **表单 / 校验**：React Hook Form + Zod
 - **国际化**：自研轻量 Provider，支持英文与中文
 - **部署目标**：Cloudflare Workers(通过 \`@cloudflare/vite-plugin\`)
 
+## 后端技术栈
+
+- **框架**：[FastAPI](https://fastapi.tiangolo.com/) + [Pydantic](https://docs.pydantic.dev/) 负责请求/响应的模型与校验
+- **服务器**：[Uvicorn](https://www.uvicorn.org/) ASGI 服务器，使用 **Docker** 容器化部署
+- **流式传输**：通过 **Server-Sent Events(SSE)** 将 token 实时推送到浏览器
+- **推理接口**：兼容 OpenAI **Chat Completions** API 风格，并在服务端管理多轮对话上下文
+- **推理服务商**：[Hugging Face Inference Providers](https://huggingface.co/docs/inference-providers)
+- **基础模型**：\`google/gemma-4-31B-it:together\`
+
 ## 工作方式
 
 1. 每个对话都会持久化到 \`localStorage\`,刷新页面也不会丢。
-2. 消息通过 Server-Sent Events 从 \`/prompt\` 端点流式返回。
-3. 每条助手回复都会记录响应耗时（秒)。
-4. 所有助手回复都通过 \`ReactMarkdown\` 渲染,链接、列表、代码块、强调都开箱即用。
+2. 客户端先 \`POST\` 到 \`/prompt\` 注册一次对话回合,并获得 \`session_id\`。
+3. 客户端再通过 SSE 连接 \`/conversation?session_id=...\`,服务端会随生成实时推送 token。
+4. FastAPI 后端按 session 维护多轮上下文,并以 OpenAI Chat Completions 接口调用 Hugging Face 推理端点。
+5. 每条助手回复都会记录响应耗时(秒)。
+6. 所有助手回复都通过 \`ReactMarkdown\` 渲染,链接、列表、代码块、强调都开箱即用。
 
 > 在 [Lovable](https://lovable.dev) 上构建和迭代。
 `;
