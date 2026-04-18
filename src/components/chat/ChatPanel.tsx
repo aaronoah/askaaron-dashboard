@@ -68,6 +68,8 @@ export function ChatPanel({ conversation, onChange }: Props) {
     onChange();
 
     setStreaming(true);
+    setElapsed(0);
+    const startedAt = Date.now();
     const controller = new AbortController();
     abortRef.current = controller;
 
@@ -81,12 +83,12 @@ export function ChatPanel({ conversation, onChange }: Props) {
         onChange();
       },
       (error) => {
+        const seconds = Math.round((Date.now() - startedAt) / 1000);
         if (error) {
-          // Persist the failure on the assistant message so the bubble can show
-          // the failed state + Retry control.
           chatStore.replaceLastAssistant(conversation.id, "", error);
-          onChange();
         }
+        chatStore.setLastAssistantSeconds(conversation.id, seconds);
+        onChange();
         setStreaming(false);
         abortRef.current = null;
       },
